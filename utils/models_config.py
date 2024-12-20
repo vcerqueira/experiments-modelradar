@@ -34,6 +34,7 @@ from statsforecast.models import (
 
 
 class ModelsConfig:
+    N_SAMPLES = 2
 
     @staticmethod
     def get_sf_models(season_len: int, input_size: int):
@@ -46,6 +47,14 @@ class ModelsConfig:
             SimpleExponentialSmoothingOptimized(),
             CrostonOptimized(),
             WindowAverage(window_size=input_size),
+        ]
+
+        return models
+
+    @staticmethod
+    def get_sf_anomaly_model(season_len: int):
+        models = [
+            SeasonalNaive(season_length=season_len),
         ]
 
         return models
