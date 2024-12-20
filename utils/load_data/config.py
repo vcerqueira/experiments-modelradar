@@ -16,3 +16,6 @@ DATA_GROUPS = [
     ('Tourism', 'Monthly'),
     ('Tourism', 'Quarterly'),
 ]
+
+GROUP_IDX = 0
+
