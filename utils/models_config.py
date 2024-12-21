@@ -34,7 +34,7 @@ from statsforecast.models import (
 
 
 class ModelsConfig:
-    N_SAMPLES = 2
+    N_SAMPLES = 10
 
     @staticmethod
     def get_sf_models(season_len: int, input_size: int):
@@ -82,10 +82,10 @@ class ModelsConfig:
 
         return auto_models_ml
 
-    @staticmethod
-    def get_nf_models(horizon):
+    @classmethod
+    def get_nf_models(cls, horizon):
         models = [
-            AutoKAN(h=horizon),
-            AutoMLP(h=horizon),
+            AutoKAN(h=horizon, num_samples=cls.N_SAMPLES),
+            AutoMLP(h=horizon, num_samples=cls.N_SAMPLES),
         ]
         return models

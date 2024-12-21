@@ -37,6 +37,7 @@ auto_mlf = AutoMLForecast(
 mlf.fit(df=train)
 auto_mlf.fit(df=train,
              n_windows=2,
+             refit=False,
              h=horizon,
              num_samples=ModelsConfig.N_SAMPLES)
 
