@@ -4,14 +4,15 @@ from neuralforecast.auto import (AutoGRU,
                                  AutoLSTM,
                                  AutoDLinear,
                                  AutoNHITS,
-                                 AutoiTransformer,
+                                 AutoAutoformer,
                                  AutoInformer,
+                                 AutoDeepNPTS,
                                  AutoTCN,
                                  AutoDilatedRNN)
 
 import lightgbm as lgb
 import xgboost as xgb
-from sklearn.linear_model import RidgeCV, LassoCV, ElasticNetCV
+from ray import tune
 from sklearn.tree import DecisionTreeRegressor
 from sklearn.neighbors import KNeighborsRegressor
 
@@ -34,7 +35,7 @@ from statsforecast.models import (
 
 
 class ModelsConfig:
-    N_SAMPLES = 10
+    N_SAMPLES = 2
 
     @staticmethod
     def get_sf_models(season_len: int, input_size: int):
@@ -83,9 +84,52 @@ class ModelsConfig:
         return auto_models_ml
 
     @classmethod
-    def get_nf_models(cls, horizon):
+    def get_auto_nf_models_vanilla(cls, horizon):
         models = [
             AutoKAN(h=horizon, num_samples=cls.N_SAMPLES),
             AutoMLP(h=horizon, num_samples=cls.N_SAMPLES),
+            AutoGRU(h=horizon, num_samples=cls.N_SAMPLES),
+            AutoLSTM(h=horizon, num_samples=cls.N_SAMPLES),
+            AutoDLinear(h=horizon, num_samples=cls.N_SAMPLES),
+            AutoNHITS(h=horizon, num_samples=cls.N_SAMPLES),
+            AutoDeepNPTS(h=horizon, num_samples=cls.N_SAMPLES),
+            AutoAutoformer(h=horizon, num_samples=cls.N_SAMPLES),
+            AutoInformer(h=horizon, num_samples=cls.N_SAMPLES),
+            AutoTCN(h=horizon, num_samples=cls.N_SAMPLES),
+            AutoDilatedRNN(h=horizon, num_samples=cls.N_SAMPLES),
         ]
+        return models
+
+    @classmethod
+    def get_auto_nf_models(cls, horizon):
+        model_cls = [
+            AutoKAN,
+            AutoMLP,
+            AutoGRU,
+            AutoLSTM,
+            AutoDLinear,
+            AutoNHITS,
+            AutoDeepNPTS,
+            AutoAutoformer,
+            AutoInformer,
+            AutoTCN,
+            AutoDilatedRNN,
+        ]
+
+        models = []
+        for mod in model_cls:
+            if 'scaler_type' in mod.default_config:
+                current_choices = mod.default_config['scaler_type'].categories
+                new_choices = [x for x in current_choices if x != 'robust']
+                mod.default_config['scaler_type'] = tune.choice(new_choices)
+
+                from pprint import pprint
+                pprint(mod.default_config)
+
+            model_instance = mod(
+                h=horizon,
+                num_samples=cls.N_SAMPLES
+            )
+            models.append(model_instance)
+
         return models
