@@ -7,6 +7,7 @@ from neuralforecast.auto import (AutoGRU,
                                  AutoAutoformer,
                                  AutoInformer,
                                  AutoDeepNPTS,
+                                 AutoDeepAR,
                                  AutoTCN,
                                  AutoDilatedRNN)
 
@@ -91,6 +92,7 @@ class ModelsConfig:
             AutoGRU(h=horizon, num_samples=cls.N_SAMPLES),
             AutoLSTM(h=horizon, num_samples=cls.N_SAMPLES),
             AutoDLinear(h=horizon, num_samples=cls.N_SAMPLES),
+            AutoDeepAR(h=horizon, num_samples=cls.N_SAMPLES),
             AutoNHITS(h=horizon, num_samples=cls.N_SAMPLES),
             AutoDeepNPTS(h=horizon, num_samples=cls.N_SAMPLES),
             AutoAutoformer(h=horizon, num_samples=cls.N_SAMPLES),
@@ -108,6 +110,7 @@ class ModelsConfig:
             AutoGRU,
             AutoLSTM,
             AutoDLinear,
+            AutoDeepAR,
             AutoNHITS,
             AutoDeepNPTS,
             AutoAutoformer,

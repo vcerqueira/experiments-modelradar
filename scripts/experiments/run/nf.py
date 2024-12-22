@@ -9,7 +9,7 @@ from utils.models_config import ModelsConfig
 
 warnings.filterwarnings("ignore")
 
-os.environ['PYTORCH_ENABLE_MPS_FALLBACK'] = '0'
+# os.environ['PYTORCH_ENABLE_MPS_FALLBACK'] = '1'
 # ---- data loading and partitioning
 EXPERIMENT = 'nf'
 data_name, group = DATA_GROUPS[GROUP_IDX]
