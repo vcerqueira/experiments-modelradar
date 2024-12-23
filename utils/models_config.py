@@ -11,6 +11,8 @@ from neuralforecast.auto import (AutoGRU,
                                  AutoTCN,
                                  AutoDilatedRNN)
 
+from neuralforecast.losses.pytorch import MAE
+
 import lightgbm as lgb
 import xgboost as xgb
 from ray import tune
@@ -85,25 +87,25 @@ class ModelsConfig:
         return auto_models_ml
 
     @classmethod
-    def get_auto_nf_models_vanilla(cls, horizon):
+    def get_auto_nf_models(cls, horizon):
         models = [
-            AutoKAN(h=horizon, num_samples=cls.N_SAMPLES),
+            # AutoKAN(h=horizon, num_samples=cls.N_SAMPLES),
             AutoMLP(h=horizon, num_samples=cls.N_SAMPLES),
-            AutoGRU(h=horizon, num_samples=cls.N_SAMPLES),
-            AutoLSTM(h=horizon, num_samples=cls.N_SAMPLES),
-            AutoDLinear(h=horizon, num_samples=cls.N_SAMPLES),
-            AutoDeepAR(h=horizon, num_samples=cls.N_SAMPLES),
-            AutoNHITS(h=horizon, num_samples=cls.N_SAMPLES),
-            AutoDeepNPTS(h=horizon, num_samples=cls.N_SAMPLES),
-            AutoAutoformer(h=horizon, num_samples=cls.N_SAMPLES),
-            AutoInformer(h=horizon, num_samples=cls.N_SAMPLES),
-            AutoTCN(h=horizon, num_samples=cls.N_SAMPLES),
-            AutoDilatedRNN(h=horizon, num_samples=cls.N_SAMPLES),
+            # AutoGRU(h=horizon, num_samples=cls.N_SAMPLES),
+            # AutoLSTM(h=horizon, num_samples=cls.N_SAMPLES),
+            # AutoDLinear(h=horizon, num_samples=cls.N_SAMPLES),
+            AutoDeepAR(h=horizon, num_samples=cls.N_SAMPLES, loss=MAE(), valid_loss=None),
+            # AutoNHITS(h=horizon, num_samples=cls.N_SAMPLES),
+            # AutoDeepNPTS(h=horizon, num_samples=cls.N_SAMPLES),
+            # AutoAutoformer(h=horizon, num_samples=cls.N_SAMPLES),
+            # AutoInformer(h=horizon, num_samples=cls.N_SAMPLES),
+            # AutoTCN(h=horizon, num_samples=cls.N_SAMPLES),
+            # AutoDilatedRNN(h=horizon, num_samples=cls.N_SAMPLES),
         ]
         return models
 
     @classmethod
-    def get_auto_nf_models(cls, horizon):
+    def get_auto_nf_models_no_robust(cls, horizon):
         model_cls = [
             AutoKAN,
             AutoMLP,
@@ -133,6 +135,7 @@ class ModelsConfig:
                 h=horizon,
                 num_samples=cls.N_SAMPLES
             )
+
             models.append(model_instance)
 
         return models

@@ -7,7 +7,7 @@ from neuralforecast import NeuralForecast
 from utils.load_data.config import DATASETS, DATA_GROUPS, GROUP_IDX
 from utils.models_config import ModelsConfig
 
-warnings.filterwarnings("ignore")
+warnings.filterwarnings('ignore')
 
 # os.environ['PYTORCH_ENABLE_MPS_FALLBACK'] = '1'
 # ---- data loading and partitioning
@@ -23,8 +23,7 @@ df = data_loader.dummify_series(df)
 train, test = data_loader.train_test_split(df, horizon=horizon)
 
 # ---- model setup
-nf = NeuralForecast(models=ModelsConfig.get_auto_nf_models(horizon=horizon),
-                    freq=freq_str)
+nf = NeuralForecast(models=ModelsConfig.get_auto_nf_models(horizon=horizon), freq=freq_str)
 
 # ---- model fitting
 nf.fit(df=train)
