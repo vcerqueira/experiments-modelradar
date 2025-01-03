@@ -9,6 +9,7 @@ warnings.filterwarnings("ignore")
 
 # ---- data loading and partitioning
 EXPERIMENT = 'sf'
+N_JOBS = 8
 data_name, group = DATA_GROUPS[GROUP_IDX]
 print(data_name, group)
 data_loader = DATASETS[data_name]
@@ -24,7 +25,7 @@ train, test = data_loader.train_test_split(df, horizon=horizon)
 sf = StatsForecast(
     models=ModelsConfig.get_sf_models(season_len=freq_int, input_size=n_lags),
     freq=freq_str,
-    n_jobs=1)
+    n_jobs=N_JOBS)
 
 # ---- model fitting
 sf.fit(df=train)

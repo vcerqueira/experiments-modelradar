@@ -36,7 +36,7 @@ from statsforecast.models import (
 
 
 class ModelsConfig:
-    N_SAMPLES = 10
+    N_SAMPLES = 20
 
     @staticmethod
     def get_sf_models(season_len: int, input_size: int):
