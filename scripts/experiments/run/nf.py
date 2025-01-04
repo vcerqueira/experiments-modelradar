@@ -1,5 +1,3 @@
-import os
-
 import warnings
 
 from neuralforecast import NeuralForecast

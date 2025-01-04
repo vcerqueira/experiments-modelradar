@@ -15,15 +15,15 @@ print(data_name, group)
 data_loader = DATASETS[data_name]
 
 df, horizon, n_lags, freq_str, freq_int = data_loader.load_everything(group)
-# df = data_loader.prune_df_by_size(df, (n_lags+horizon+1)*2)
+df = data_loader.prune_df_by_size(df, (n_lags+horizon+1)*2)
 # df, horizon, n_lags, freq_str, freq_int = data_loader.load_everything(group, sample_n_uid=5)
 # df = data_loader.get_uid_tails(df, tail_size=100)
 # df = data_loader.dummify_series(df)
 # df['unique_id'].value_counts()
 
 train, test = data_loader.train_test_split(df, horizon=horizon)
-train = data_loader.prune_df_by_size(train, n_lags+horizon+1)
-test = data_loader.prune_df_by_size(test, n_lags+horizon+1)
+# train = data_loader.prune_df_by_size(train, n_lags+horizon+1)
+# test = data_loader.prune_df_by_size(test, n_lags+horizon+1)
 
 
 

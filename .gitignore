@@ -166,6 +166,7 @@ lightning_logs
 # Custom
 assets/old/
 assets/papers/
+assets/datasets/m4/
 assets/results_rest
 experiments_extra/
 metaforecast/

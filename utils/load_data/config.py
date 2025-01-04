@@ -15,7 +15,9 @@ DATA_GROUPS = [
     ('M3', 'Quarterly'),
     ('Tourism', 'Monthly'),
     ('Tourism', 'Quarterly'),
+    ('M4', 'Monthly'),
+    ('M4', 'Quarterly'),
 ]
 
-GROUP_IDX = 0
+GROUP_IDX = 5
 
