@@ -87,18 +87,18 @@ class ModelsConfig:
     @classmethod
     def get_auto_nf_models(cls, horizon):
         models = [
-            AutoKAN(h=horizon, num_samples=cls.N_SAMPLES),
-            AutoMLP(h=horizon, num_samples=cls.N_SAMPLES),
-            AutoGRU(h=horizon, num_samples=cls.N_SAMPLES),
-            AutoLSTM(h=horizon, num_samples=cls.N_SAMPLES),
-            AutoDLinear(h=horizon, num_samples=cls.N_SAMPLES),
-            AutoDeepAR(h=horizon, num_samples=cls.N_SAMPLES),
-            AutoNHITS(h=horizon, num_samples=cls.N_SAMPLES),
-            AutoDeepNPTS(h=horizon, num_samples=cls.N_SAMPLES),
-            AutoAutoformer(h=horizon, num_samples=cls.N_SAMPLES),
-            AutoInformer(h=horizon, num_samples=cls.N_SAMPLES),
-            AutoTCN(h=horizon, num_samples=cls.N_SAMPLES),
-            AutoDilatedRNN(h=horizon, num_samples=cls.N_SAMPLES),
+            AutoKAN(h=horizon, num_samples=cls.N_SAMPLES, alias='AutoKAN'),
+            AutoMLP(h=horizon, num_samples=cls.N_SAMPLES, alias='AutoMLP'),
+            AutoGRU(h=horizon, num_samples=cls.N_SAMPLES, alias='AutoGRU'),
+            AutoLSTM(h=horizon, num_samples=cls.N_SAMPLES, alias='AutoLSTM'),
+            AutoDLinear(h=horizon, num_samples=cls.N_SAMPLES, alias='AutoDLinear'),
+            AutoDeepAR(h=horizon, num_samples=cls.N_SAMPLES, alias='AutoDeepAR'),
+            AutoNHITS(h=horizon, num_samples=cls.N_SAMPLES, alias='AutoNHITS'),
+            AutoDeepNPTS(h=horizon, num_samples=cls.N_SAMPLES, alias='AutoDeepNPTS'),
+            AutoAutoformer(h=horizon, num_samples=cls.N_SAMPLES, alias='AutoAutoformer'),
+            AutoInformer(h=horizon, num_samples=cls.N_SAMPLES, alias='AutoInformer'),
+            AutoTCN(h=horizon, num_samples=cls.N_SAMPLES, alias='AutoTCN'),
+            AutoDilatedRNN(h=horizon, num_samples=cls.N_SAMPLES, alias='AutoDilatedRNN'),
         ]
         return models
 
