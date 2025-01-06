@@ -10,6 +10,6 @@ scikit-learn==1.5.2
 scipy==1.14.1
 statsforecast==1.7.5
 statsmodels==0.14.4
-utilsforecast==0.2.8
+utilsforecast==0.2.9
 plotnine==0.14.3
-modelradar==0.1.1
+modelradar==0.1.2
