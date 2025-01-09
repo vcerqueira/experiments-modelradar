@@ -9,7 +9,7 @@ warnings.filterwarnings("ignore")
 
 # ---- data loading and partitioning
 EXPERIMENT = 'sf'
-N_JOBS = 1  # 8
+N_JOBS = 8  # 8
 data_name, group = DATA_GROUPS[GROUP_IDX]
 print(data_name, group)
 data_loader = DATASETS[data_name]

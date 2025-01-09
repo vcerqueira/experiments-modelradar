@@ -167,9 +167,8 @@ lightning_logs
 assets/old/
 assets/papers/
 assets/datasets/m4/
-assets/results_rest
+assets/results/
 experiments_extra/
-metaforecast/
 scripts/experiments/dev/
 extra
 modelradar/

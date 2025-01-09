@@ -4,8 +4,8 @@ from neuralforecast.auto import (AutoGRU,
                                  AutoLSTM,
                                  AutoDLinear,
                                  AutoNHITS,
-                                 AutoAutoformer,
-                                 AutoInformer,
+                                 AutoPatchTST,
+                                 AutoTFT,
                                  AutoDeepNPTS,
                                  AutoDeepAR,
                                  AutoTCN,
@@ -13,7 +13,6 @@ from neuralforecast.auto import (AutoGRU,
 
 import lightgbm as lgb
 import xgboost as xgb
-from ray import tune
 from sklearn.tree import DecisionTreeRegressor
 from sklearn.neighbors import KNeighborsRegressor
 
@@ -87,51 +86,49 @@ class ModelsConfig:
     @classmethod
     def get_auto_nf_models(cls, horizon):
         models = [
-            AutoKAN(h=horizon, num_samples=cls.N_SAMPLES, alias='AutoKAN'),
-            AutoMLP(h=horizon, num_samples=cls.N_SAMPLES, alias='AutoMLP'),
-            AutoGRU(h=horizon, num_samples=cls.N_SAMPLES, alias='AutoGRU'),
-            AutoLSTM(h=horizon, num_samples=cls.N_SAMPLES, alias='AutoLSTM'),
-            AutoDLinear(h=horizon, num_samples=cls.N_SAMPLES, alias='AutoDLinear'),
-            AutoDeepAR(h=horizon, num_samples=cls.N_SAMPLES, alias='AutoDeepAR'),
-            AutoNHITS(h=horizon, num_samples=cls.N_SAMPLES, alias='AutoNHITS'),
-            AutoDeepNPTS(h=horizon, num_samples=cls.N_SAMPLES, alias='AutoDeepNPTS'),
-            AutoAutoformer(h=horizon, num_samples=cls.N_SAMPLES, alias='AutoAutoformer'),
-            AutoInformer(h=horizon, num_samples=cls.N_SAMPLES, alias='AutoInformer'),
-            AutoTCN(h=horizon, num_samples=cls.N_SAMPLES, alias='AutoTCN'),
-            AutoDilatedRNN(h=horizon, num_samples=cls.N_SAMPLES, alias='AutoDilatedRNN'),
+            # AutoKAN(h=horizon, num_samples=cls.N_SAMPLES, alias='AutoKAN'),
+            # AutoMLP(h=horizon, num_samples=cls.N_SAMPLES, alias='AutoMLP'),
+            # AutoDLinear(h=horizon, num_samples=cls.N_SAMPLES, alias='AutoDLinear'),
+            # AutoNHITS(h=horizon, num_samples=cls.N_SAMPLES, alias='AutoNHITS'),
+            # AutoDeepNPTS(h=horizon, num_samples=cls.N_SAMPLES, alias='AutoDeepNPTS'),
+            AutoTFT(h=horizon, num_samples=cls.N_SAMPLES, alias='AutoTFT'),
+            AutoPatchTST(h=horizon, num_samples=cls.N_SAMPLES, alias='AutoPatchTST'),
+            # AutoGRU(h=horizon, num_samples=cls.N_SAMPLES, alias='AutoGRU'),
+            # AutoDeepAR(h=horizon, num_samples=cls.N_SAMPLES, alias='AutoDeepAR'),
+            # AutoLSTM(h=horizon, num_samples=cls.N_SAMPLES, alias='AutoLSTM'),
+            # AutoDilatedRNN(h=horizon, num_samples=cls.N_SAMPLES, alias='AutoDilatedRNN'),
+            # AutoTCN(h=horizon, num_samples=cls.N_SAMPLES, alias='AutoTCN'),
         ]
         return models
 
     @classmethod
-    def get_auto_nf_models_no_robust(cls, horizon):
-        model_cls = [
-            AutoKAN,
-            AutoMLP,
-            AutoGRU,
-            AutoLSTM,
-            AutoDLinear,
-            AutoDeepAR,
-            AutoNHITS,
-            AutoDeepNPTS,
-            AutoAutoformer,
-            AutoInformer,
-            AutoTCN,
-            AutoDilatedRNN,
-        ]
+    def get_auto_nf_models_cpu(cls, horizon):
+        model_cls = {
+            'AutoKAN': AutoKAN,
+            'AutoMLP': AutoMLP,
+            'AutoDLinear': AutoDLinear,
+            'AutoNHITS': AutoNHITS,
+            'AutoDeepNPTS': AutoDeepNPTS,
+            'AutoTFT': AutoTFT,
+            'AutoGRU': AutoGRU,
+            'AutoLSTM': AutoLSTM,
+            'AutoDeepAR': AutoDeepAR,
+            'AutoDilatedRNN': AutoDilatedRNN,
+            'AutoTCN': AutoTCN,
+            'AutoPatchTST': AutoPatchTST,
+        }
 
         models = []
-        for mod in model_cls:
-            if 'scaler_type' in mod.default_config:
-                current_choices = mod.default_config['scaler_type'].categories
-                new_choices = [x for x in current_choices if x != 'robust']
-                mod.default_config['scaler_type'] = tune.choice(new_choices)
-
-                # from pprint import pprint
-                # pprint(mod.default_config)
+        for mod_name, mod in model_cls.items():
+            # for RNN's
+            mod.default_config['accelerator'] = 'cpu'
+            # for M4
+            mod.default_config['limit_val_batches'] = 50
 
             model_instance = mod(
                 h=horizon,
-                num_samples=cls.N_SAMPLES
+                num_samples=cls.N_SAMPLES,
+                alias=mod_name,
             )
 
             models.append(model_instance)
