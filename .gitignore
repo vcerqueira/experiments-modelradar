@@ -165,6 +165,7 @@ lightning_logs
 
 # Custom
 assets/old/
+assets/cv.csv
 assets/papers/
 assets/datasets/m4/
 assets/results/

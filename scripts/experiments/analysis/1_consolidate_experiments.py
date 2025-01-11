@@ -5,11 +5,10 @@ from utils.load_data.config import DATA_GROUPS
 VARIANTS = ['nf', 'sf', 'mlf']
 RESULTS_DIR = 'assets/results'
 
+metadata = pd.read_csv(f'{RESULTS_DIR}/metadata.csv')
+
 dataset = []
 for ds, group in DATA_GROUPS:
-    # ds, group = 'M3','Monthly'
-    if ds == 'M4':
-        continue
 
     df = pd.read_csv(f'{RESULTS_DIR}/{ds},{group},sfa.csv')
     for variant in VARIANTS:
@@ -24,9 +23,13 @@ for ds, group in DATA_GROUPS:
     df = df.merge(feats, on='unique_id', how='left')
 
     df['unique_id'] = ds + '_' + df['unique_id'].astype(str)
+    df['data_group'] = f'{ds},{group}'
 
     dataset.append(df)
 
 df_all = pd.concat(dataset)
+
+df_all = df_all.merge(metadata, on='data_group', how='left')
+df_all = df_all.drop(columns=['data_group','n_obs','n_uids'])
 
 df_all.to_csv('assets/cv.csv', index=False)

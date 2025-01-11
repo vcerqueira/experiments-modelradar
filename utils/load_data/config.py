@@ -21,5 +21,5 @@ DATA_GROUPS = [
     ('M4', 'Quarterly'),
 ]
 
-GROUP_IDX = 0
+GROUP_IDX = 2
 
