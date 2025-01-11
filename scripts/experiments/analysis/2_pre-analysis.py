@@ -4,6 +4,8 @@ from utilsforecast.losses import smape
 
 from modelradar.evaluate.radar import ModelRadar
 
+from utils.models_config import COLOR_MAPPING
+
 OUTPUT_DIR = 'scripts/experiments/outputs'
 
 cv = pd.read_csv('assets/cv.csv')
@@ -29,7 +31,8 @@ err = radar.evaluate(keep_uids=True)
 err_hard = radar.uid_accuracy.get_hard_uids(err)
 
 plot1 = radar.evaluate(return_plot=True,
-                       fill_color='#4a5d7c',
+                       # fill_color='#4a5d7c',
+                       fill_color=COLOR_MAPPING,
                        flip_coords=False,
                        revert_order=True,
                        extra_theme_settings=p9.theme(axis_text_x=p9.element_text(angle=60, size=11),

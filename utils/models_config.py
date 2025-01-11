@@ -33,6 +33,39 @@ from statsforecast.models import (
     WindowAverage
 )
 
+COLORS = {
+    'A': '#8B0000',  # Deep red
+    'B': '#6A0DAD',  # Deep purple
+    'C': '#20B2AA'  # Light sea green
+}
+
+COLOR_MAPPING = {'AutoTFT': COLORS['A'],
+                 'AutoPatchTST': COLORS['A'],
+                 'AutoKAN': COLORS['A'],
+                 'AutoMLP': COLORS['A'],
+                 'AutoGRU': COLORS['A'],
+                 'AutoLSTM': COLORS['A'],
+                 'AutoDLinear': COLORS['A'],
+                 'AutoDeepAR': COLORS['A'],
+                 'AutoDeepAR-median': COLORS['A'],
+                 'AutoNHITS': COLORS['A'],
+                 'AutoDeepNPTS': COLORS['A'],
+                 'AutoTCN': COLORS['A'],
+                 'AutoDilatedRNN': COLORS['A'],
+                 'RWD': COLORS['B'],
+                 'SeasonalNaive': COLORS['B'],
+                 'AutoETS': COLORS['B'],
+                 'AutoARIMA': COLORS['B'],
+                 'AutoTheta': COLORS['B'],
+                 'SESOpt': COLORS['B'],
+                 'CrostonOptimized': COLORS['B'],
+                 'WindowAverage': COLORS['B'],
+                 'Ridge': COLORS['C'],
+                 'Lasso': COLORS['C'],
+                 'XGB': COLORS['C'],
+                 'LGB': COLORS['C'],
+                 }
+
 
 class ModelsConfig:
     N_SAMPLES = 20
