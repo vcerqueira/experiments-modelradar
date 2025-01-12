@@ -35,21 +35,18 @@ plot1 = radar.evaluate(return_plot=True,
                        fill_color=COLOR_MAPPING,
                        flip_coords=False,
                        revert_order=True,
-                       extra_theme_settings=p9.theme(axis_text_x=p9.element_text(angle=60, size=11),
-                                                     axis_title_y=p9.element_text(size=12)))
-plot1.save(f'{OUTPUT_DIR}/plot1_preanalysis.pdf', width=12, height=5)
+                       extra_theme_settings=p9.theme(plot_margin=0,
+                                                     axis_text_x=p9.element_text(angle=60),
+                                                     axis_title_y=p9.element_text(size=13),
+                                                     axis_text=p9.element_text(size=14,
+                                                                               colour='black',
+                                                                               weight='bold')
+                                                     ))
+plot1.save(f'{OUTPUT_DIR}/plot1_preanalysis.pdf', width=11.5, height=5.5)
 
 #
 
 err = radar.evaluate(keep_uids=True)
-
-plot1 = radar.evaluate(return_plot=True,
-                       fill_color='#4a5d7c',
-                       flip_coords=False,
-                       revert_order=True,
-                       extra_theme_settings=p9.theme(axis_text_x=p9.element_text(angle=60, size=11),
-                                                     axis_title_y=p9.element_text(size=12)))
-plot1.save(f'{OUTPUT_DIR}/plot1_overall.pdf', width=12, height=5)
 
 # multi-dim
 

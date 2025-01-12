@@ -1,4 +1,5 @@
 import pandas as pd
+import plotnine as p9
 from utilsforecast.losses import smape
 
 from modelradar.evaluate.radar import ModelRadar
@@ -37,75 +38,139 @@ cv_hard = radar.cv_df.query(f'unique_id==@radar.uid_accuracy.hard_uid').reset_in
 
 # - overall accuracy
 plot2 = radar.evaluate(return_plot=True,
-                       # fill_color='#4a5d7c',
                        fill_color=COLOR_MAPPING,
-                       flip_coords=True)
-plot2.save(f'{OUTPUT_DIR}/plot2_overall.pdf', width=5, height=5)
+                       flip_coords=True,
+                       extra_theme_settings=p9.theme(plot_margin=0,
+                                                     axis_text=p9.element_text(size=15,
+                                                                               colour='black',
+                                                                               weight='bold'),
+                                                     axis_title_x=p9.element_blank()), )
+plot2.save(f'{OUTPUT_DIR}/plot2_overall.pdf', width=6, height=5)
 
 # - expected shortfall
 
 plot3 = radar.uid_accuracy.expected_shortfall(err,
                                               return_plot=True,
                                               fill_color=COLOR_MAPPING,
-                                              flip_coords=True)
-plot3.save(f'{OUTPUT_DIR}/plot3_es.pdf', width=5, height=5)
+                                              flip_coords=True,
+                                              extra_theme_settings=p9.theme(plot_margin=0,
+                                                                            axis_text=p9.element_text(size=15,
+                                                                                                      colour='black',
+                                                                                                      weight='bold'),
+                                                                            axis_title_x=p9.element_blank()))
+plot3.save(f'{OUTPUT_DIR}/plot3_es.pdf', width=6, height=5)
 
 # - winning ratios
 
-plot4 = radar.rope.get_winning_ratios(err, return_plot=True, reference=radar.rope.reference)
-plot4.save(f'{OUTPUT_DIR}/plot4_wr.pdf', width=5, height=5)
+plot4 = radar.rope.get_winning_ratios(err,
+                                      return_plot=True,
+                                      reference=radar.rope.reference,
+                                      extra_theme_settings=p9.theme(plot_margin=0,
+                                                                    axis_text=p9.element_text(size=15,
+                                                                                              colour='black',
+                                                                                              weight='bold'),
+                                                                    axis_title_x=p9.element_blank()))
+plot4.save(f'{OUTPUT_DIR}/plot4_wr.pdf', width=6, height=5)
 
 # - winning ratios hard
 
-plot12 = radar.rope.get_winning_ratios(err_hard, return_plot=True, reference=radar.rope.reference)
-plot12.save(f'{OUTPUT_DIR}/plot12_wr_hard.pdf', width=5, height=5)
+plot12 = radar.rope.get_winning_ratios(err_hard,
+                                       return_plot=True,
+                                       reference=radar.rope.reference,
+                                       extra_theme_settings=p9.theme(plot_margin=0,
+                                                                     axis_text=p9.element_text(size=15,
+                                                                                               colour='black',
+                                                                                               weight='bold'),
+                                                                     axis_title_x=p9.element_blank()))
+plot12.save(f'{OUTPUT_DIR}/plot12_wr_hard.pdf', width=6, height=5)
 
 # - winning ratios
 
 radar.rope.rope = 0
 
-plot4 = radar.rope.get_winning_ratios(err, return_plot=True, reference=radar.rope.reference)
-plot4.save(f'{OUTPUT_DIR}/plot4_wr_rope0.pdf', width=5, height=5)
+plot4 = radar.rope.get_winning_ratios(err,
+                                      return_plot=True,
+                                      reference=radar.rope.reference,
+                                      extra_theme_settings=p9.theme(plot_margin=0,
+                                                                    axis_text=p9.element_text(size=15,
+                                                                                              colour='black',
+                                                                                              weight='bold'),
+                                                                    axis_title_x=p9.element_blank()))
+plot4.save(f'{OUTPUT_DIR}/plot4_wr_rope0.pdf', width=6, height=5)
 
 # - winning ratios hard
 
-plot12 = radar.rope.get_winning_ratios(err_hard, return_plot=True, reference=radar.rope.reference)
-plot12.save(f'{OUTPUT_DIR}/plot12_wr_hard_rope0.pdf', width=5, height=5)
+plot12 = radar.rope.get_winning_ratios(err_hard,
+                                       return_plot=True,
+                                       reference=radar.rope.reference,
+                                       extra_theme_settings=p9.theme(plot_margin=0,
+                                                                     axis_text=p9.element_text(size=15,
+                                                                                               colour='black',
+                                                                                               weight='bold'),
+                                                                     axis_title_x=p9.element_blank()))
+plot12.save(f'{OUTPUT_DIR}/plot12_wr_hard_rope0.pdf', width=6, height=5)
 
 # - horizon bounds
 plot5 = radar.evaluate_by_horizon_bounds(return_plot=True,
                                          plot_model_cats=radar.model_order,
-                                         fill_color=COLOR_MAPPING)
-plot5.save(f'{OUTPUT_DIR}/plot5_hb.pdf', width=10, height=4)
+                                         fill_color=COLOR_MAPPING,
+                                         extra_theme_settings=p9.theme(plot_margin=0,
+                                                                       strip_background_x=p9.element_text(
+                                                                           colour='lightgrey'),
+                                                                       strip_text=p9.element_text(size=18),
+                                                                       axis_text_x=p9.element_text(angle=60),
+                                                                       axis_title_y=p9.element_text(size=15),
+                                                                       axis_text=p9.element_text(size=15,
+                                                                                                 colour='black',
+                                                                                                 weight='bold'),
+                                                                       ))
+plot5.save(f'{OUTPUT_DIR}/plot5_hb.pdf', width=11, height=5.5)
 
 # - horizon traj
 
-plot6 = radar.evaluate_by_horizon(return_plot=True)
-plot6.save(f'{OUTPUT_DIR}/_plot6_horizon.pdf', width=10, height=4)
+# plot6 = radar.evaluate_by_horizon(return_plot=True)
+# plot6.save(f'{OUTPUT_DIR}/_plot6_horizon.pdf', width=10, height=4)
 
 # - anomalies
 
 plot7 = radar.evaluate_by_group(group_col='anomaly_status',
                                 return_plot=True,
                                 plot_model_cats=radar.model_order,
-                                fill_color=COLOR_MAPPING)
-plot7.save(f'{OUTPUT_DIR}/plot7_anomaly.pdf', width=10, height=4)
+                                fill_color=COLOR_MAPPING,
+                                extra_theme_settings=p9.theme(plot_margin=0,
+                                                              strip_text=p9.element_text(size=18),
+                                                              axis_title_y=p9.element_text(size=15),
+                                                              axis_text_x=p9.element_text(angle=60),
+                                                              axis_text=p9.element_text(size=15,
+                                                                                        colour='black',
+                                                                                        weight='bold')
+                                                              ))
+plot7.save(f'{OUTPUT_DIR}/plot7_anomaly.pdf', width=12, height=5.5)
 
 # - accuracy on hard
 plot8 = radar.evaluate(cv=cv_hard,
                        return_plot=True,
-                       # fill_color='#4a5d7c',
                        fill_color=COLOR_MAPPING,
-                       flip_coords=True)
-plot8.save(f'{OUTPUT_DIR}/plot8_accuracy_on_hard.pdf', width=5, height=5)
+                       flip_coords=True,
+                       extra_theme_settings=p9.theme(plot_margin=0,
+                                                     axis_text=p9.element_text(size=15,
+                                                                               colour='black',
+                                                                               weight='bold'),
+                                                     axis_title_x=p9.element_blank()))
+plot8.save(f'{OUTPUT_DIR}/plot8_accuracy_on_hard.pdf', width=6, height=5)
 
 # - expected shortfall on hard
 
 plot9 = radar.uid_accuracy.expected_shortfall(err_hard,
                                               return_plot=True,
                                               fill_color=COLOR_MAPPING,
-                                              flip_coords=True)
-plot9.save(f'{OUTPUT_DIR}/plot9_es_hard.pdf', width=5, height=5)
+                                              flip_coords=True,
+                                              extra_theme_settings=p9.theme(plot_margin=0,
+                                                                            axis_text=p9.element_text(size=15,
+                                                                                                      colour='black',
+                                                                                                      weight='bold'),
+                                                                            axis_title_x=p9.element_blank()))
+plot9.save(f'{OUTPUT_DIR}/plot9_es_hard.pdf', width=6, height=5)
 
 # - s naive dist
 
@@ -113,32 +178,60 @@ plot10 = ModelRadarPlotter.error_histogram(df=err[radar.uid_accuracy.reference].
                                            x_col=radar.uid_accuracy.reference,
                                            x_threshold=radar.uid_accuracy.hardness_threshold,
                                            fill_color='#4a5d7c')
+plot10 = plot10 + p9.theme(plot_margin=0.025,
+                           axis_text=p9.element_text(size=14),
+                           axis_title=p9.element_text(size=14))
 
-plot10.save(f'{OUTPUT_DIR}/plot10_baseline_dist.pdf', width=10, height=4)
+plot10.save(f'{OUTPUT_DIR}/plot10_baseline_dist.pdf', width=11, height=5.5)
 
 # - freq
 
 plot11 = radar.evaluate_by_group(group_col='Frequency',
                                  return_plot=True,
                                  plot_model_cats=radar.model_order,
-                                 fill_color=COLOR_MAPPING)
-plot11.save(f'{OUTPUT_DIR}/plot11_freq.pdf', width=10, height=4)
+                                 fill_color=COLOR_MAPPING,
+                                 extra_theme_settings=p9.theme(plot_margin=0,
+                                                               strip_text=p9.element_text(size=18),
+                                                               axis_text_x=p9.element_text(size=15,
+                                                                                           angle=60,
+                                                                                           colour='black',
+                                                                                           weight='bold'),
+                                                               axis_title_x=p9.element_blank()))
+plot11.save(f'{OUTPUT_DIR}/plot11_freq.pdf', width=11, height=5.5)
 
 # - trend
 
 plot13 = radar.evaluate_by_group(group_col='trend_str',
                                  return_plot=True,
                                  plot_model_cats=radar.model_order,
-                                 fill_color=COLOR_MAPPING)
-plot13.save(f'{OUTPUT_DIR}/plot13_trend.pdf', width=10, height=4)
+                                 fill_color=COLOR_MAPPING,
+                                 extra_theme_settings=p9.theme(plot_margin=0,
+                                                               strip_text=p9.element_text(size=18),
+                                                               axis_title_y=p9.element_text(size=15),
+                                                               axis_text_y=p9.element_text(size=15),
+                                                               axis_text_x=p9.element_text(size=15,
+                                                                                           angle=60,
+                                                                                           colour='black',
+                                                                                           weight='bold'),
+                                                               axis_title_x=p9.element_blank()))
+plot13.save(f'{OUTPUT_DIR}/plot13_trend.pdf', width=11, height=5.5)
 
 # - seas
 
 plot14 = radar.evaluate_by_group(group_col='seasonal_str',
                                  return_plot=True,
                                  plot_model_cats=radar.model_order,
-                                 fill_color=COLOR_MAPPING)
-plot14.save(f'{OUTPUT_DIR}/plot14_seas.pdf', width=10, height=4)
+                                 fill_color=COLOR_MAPPING,
+                                 extra_theme_settings=p9.theme(plot_margin=0,
+                                                               strip_text=p9.element_text(size=18),
+                                                               axis_title_y=p9.element_text(size=15),
+                                                               axis_text_y=p9.element_text(size=15),
+                                                               axis_text_x=p9.element_text(size=15,
+                                                                                           angle=60,
+                                                                                           colour='black',
+                                                                                           weight='bold'),
+                                                               axis_title_x=p9.element_blank()))
+plot14.save(f'{OUTPUT_DIR}/plot14_seas.pdf', width=11, height=5.5)
 
 # summary
 
@@ -174,4 +267,9 @@ plot16 = SpiderPlot.create_plot(df=df,
                                 values='rank',
                                 include_title=False,
                                 color_set=None)
-plot16.save(f'{OUTPUT_DIR}/plot16_all_spider.pdf')
+plot16 = plot16 + p9.theme(plot_margin=0.05,
+                           legend_position='top',
+                           legend_text=p9.element_text(size=17),
+                           legend_key_size=20,
+                           legend_key_width=20)
+plot16.save(f'{OUTPUT_DIR}/plot16_all_spider.pdf', width=12, height=16)
