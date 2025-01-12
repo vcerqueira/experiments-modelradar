@@ -55,6 +55,23 @@ plot3.save(f'{OUTPUT_DIR}/plot3_es.pdf', width=5, height=5)
 plot4 = radar.rope.get_winning_ratios(err, return_plot=True, reference=radar.rope.reference)
 plot4.save(f'{OUTPUT_DIR}/plot4_wr.pdf', width=5, height=5)
 
+# - winning ratios hard
+
+plot12 = radar.rope.get_winning_ratios(err_hard, return_plot=True, reference=radar.rope.reference)
+plot12.save(f'{OUTPUT_DIR}/plot12_wr_hard.pdf', width=5, height=5)
+
+# - winning ratios
+
+radar.rope.rope = 0
+
+plot4 = radar.rope.get_winning_ratios(err, return_plot=True, reference=radar.rope.reference)
+plot4.save(f'{OUTPUT_DIR}/plot4_wr_rope0.pdf', width=5, height=5)
+
+# - winning ratios hard
+
+plot12 = radar.rope.get_winning_ratios(err_hard, return_plot=True, reference=radar.rope.reference)
+plot12.save(f'{OUTPUT_DIR}/plot12_wr_hard_rope0.pdf', width=5, height=5)
+
 # - horizon bounds
 plot5 = radar.evaluate_by_horizon_bounds(return_plot=True,
                                          plot_model_cats=radar.model_order,
@@ -106,11 +123,6 @@ plot11 = radar.evaluate_by_group(group_col='Frequency',
                                  plot_model_cats=radar.model_order,
                                  fill_color=COLOR_MAPPING)
 plot11.save(f'{OUTPUT_DIR}/plot11_freq.pdf', width=10, height=4)
-
-# - winning ratios hard
-
-plot12 = radar.rope.get_winning_ratios(err_hard, return_plot=True, reference=radar.rope.reference)
-plot12.save(f'{OUTPUT_DIR}/plot12_wr_hard.pdf', width=5, height=5)
 
 # - trend
 
