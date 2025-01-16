@@ -1,5 +1,5 @@
 import pandas as pd
-from modelradar.pipelines.utils import DecompositionSTL
+from cardtale.analytics.testing.card.trend import DifferencingTests
 
 from utils.load_data.config import DATASETS, DATA_GROUPS, GROUP_IDX
 
@@ -14,11 +14,24 @@ df, horizon, n_lags, freq_str, freq_int = data_loader.load_everything(group)
 train, _ = data_loader.train_test_split(df, horizon=horizon)
 
 # ---- feature extraction
-strength_df = train.groupby('unique_id').apply(lambda x: DecompositionSTL.get_strengths(x, period=freq_int))
-strength_df = pd.DataFrame.from_records(strength_df, index=strength_df.index)
-strength_df['trend_str'] = (strength_df['trend_str'] > 0.6).map({False: 'No trend', True: 'With trend'})
-strength_df['seasonal_str'] = (strength_df['seasonal_str'] > 0.6).map(
-    {False: 'No seasonality', True: 'With seasonality'})
-strength_df = strength_df.reset_index()
+features_l = []
+for uid, uid_df in train.groupby('unique_id'):
+    try:
+        trend = DifferencingTests.ndiffs(uid_df['y'], test='kpss', test_type='level')
+    except OverflowError:
+        trend = 0
+
+    seas = DifferencingTests.nsdiffs(uid_df['y'], test='seas', period=freq_int)
+
+    trend_str = 'Non-stationary' if trend > 0 else 'Stationary'
+    seas_str = 'Seasonal' if seas > 0 else 'Non-seasonal'
+
+    features_l.append({
+        'unique_id': uid,
+        'trend_str': trend_str,
+        'seas_str': seas_str,
+    })
+
+strength_df = pd.DataFrame(features_l)
 
 strength_df.to_csv(f'assets/results/{data_name},{group},{EXPERIMENT}.csv', index=False)

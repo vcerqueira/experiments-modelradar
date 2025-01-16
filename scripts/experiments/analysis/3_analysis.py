@@ -11,18 +11,27 @@ OUTPUT_DIR = 'scripts/experiments/outputs'
 
 cv = pd.read_csv('assets/cv.csv')
 cv['anomaly_status'] = cv['is_anomaly'].map({0: 'No anomalies', 1: 'With anomalies'})
+cv = cv.rename(columns={
+    'Ridge': 'AutoRidge',
+    'Lasso': 'AutoLasso',
+    'XGB': 'AutoXGBoost',
+    'LGB': 'AutoLightGBM',
+})
+
+# cv['anomaly_status'].value_counts()
+# cv['anomaly_status'].value_counts(normalize=True)
 
 monthly_prefix = ['m3_m', 'tourism_m', 'gluonts_m', 'm4_m']
 cv['Frequency'] = cv.apply(lambda row: 'Monthly' if any(row['unique_id'].lower().startswith(prefix)
                                                         for prefix in monthly_prefix) else 'Quarterly', axis=1)
 
 metadata = ['unique_id', 'ds', 'y',
-            'trend_str', 'seasonal_str',
+            'trend_str', 'seas_str',
             'is_anomaly', 'large_obs',
             'large_uids', 'anomaly_status', 'Frequency']
 model_names = cv.columns[~cv.columns.str.contains('|'.join(metadata))].tolist()
 
-SELECTED_MODELS = ['AutoETS', 'AutoNHITS', 'SESOpt', 'LGB', 'AutoTFT', 'AutoKAN', 'AutoLSTM', 'AutoTheta',
+SELECTED_MODELS = ['AutoETS', 'AutoNHITS', 'SESOpt', 'AutoLightGBM', 'AutoTFT', 'AutoKAN', 'AutoTheta',# 'AutoLSTM',
                    'AutoDeepNPTS', 'SeasonalNaive']
 
 radar = ModelRadar(cv_df=cv,
@@ -218,7 +227,7 @@ plot13.save(f'{OUTPUT_DIR}/plot13_trend.pdf', width=11, height=5.5)
 
 # - seas
 
-plot14 = radar.evaluate_by_group(group_col='seasonal_str',
+plot14 = radar.evaluate_by_group(group_col='seas_str',
                                  return_plot=True,
                                  plot_model_cats=radar.model_order,
                                  fill_color=COLOR_MAPPING,
@@ -240,7 +249,7 @@ eval_hb = radar.evaluate_by_horizon_bounds()
 error_on_anomalies = radar.evaluate_by_group(group_col='anomaly_status')
 error_on_freq = radar.evaluate_by_group(group_col='Frequency')
 error_on_trend = radar.evaluate_by_group(group_col='trend_str')
-error_on_seas = radar.evaluate_by_group(group_col='seasonal_str')
+error_on_seas = radar.evaluate_by_group(group_col='seas_str')
 error_on_large_tr = radar.evaluate_by_group(group_col='large_obs')
 error_on_large_uid = radar.evaluate_by_group(group_col='large_uids')
 
@@ -262,6 +271,7 @@ df = df.loc[list(top_k_models), :]
 
 plot15 = ModelRadarPlotter.multidim_parallel_coords(df, values='normalize')
 plot15.save(f'{OUTPUT_DIR}/plot15_all_parallel.pdf', width=10, height=4)
+
 
 plot16 = SpiderPlot.create_plot(df=df,
                                 values='rank',

@@ -13,3 +13,4 @@ statsmodels==0.14.4
 utilsforecast==0.2.9
 plotnine==0.14.3
 modelradar==0.1.2
+cardtale==0.1.0
