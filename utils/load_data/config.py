@@ -22,4 +22,3 @@ DATA_GROUPS = [
 ]
 
 GROUP_IDX = 2
-

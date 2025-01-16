@@ -31,7 +31,11 @@ metadata = ['unique_id', 'ds', 'y',
             'large_uids', 'anomaly_status', 'Frequency']
 model_names = cv.columns[~cv.columns.str.contains('|'.join(metadata))].tolist()
 
-SELECTED_MODELS = ['AutoETS', 'AutoNHITS', 'SESOpt', 'AutoLightGBM', 'AutoTFT', 'AutoKAN', 'AutoTheta',# 'AutoLSTM',
+# SELECTED_MODELS = ['AutoETS', 'AutoNHITS', 'SESOpt', 'AutoLightGBM', 'AutoTFT', 'AutoKAN', 'AutoTheta',# 'AutoLSTM',
+#                    'AutoDeepNPTS', ]
+SELECTED_MODELS = ['AutoETS', 'AutoNHITS', 'SESOpt',
+                   'AutoLightGBM', 'AutoTFT', 'AutoKAN',
+                   'AutoARIMA', 'AutoTheta',
                    'AutoDeepNPTS', 'SeasonalNaive']
 
 radar = ModelRadar(cv_df=cv,
@@ -252,11 +256,13 @@ error_on_trend = radar.evaluate_by_group(group_col='trend_str')
 error_on_seas = radar.evaluate_by_group(group_col='seas_str')
 error_on_large_tr = radar.evaluate_by_group(group_col='large_obs')
 error_on_large_uid = radar.evaluate_by_group(group_col='large_uids')
+eval_on_hard = radar.uid_accuracy.accuracy_on_hard(err)
+eval_on_hard.name = 'Hard'
 
 df = pd.concat([eval_overall,
                 radar.uid_accuracy.expected_shortfall(err),
                 eval_hb,
-                radar.uid_accuracy.accuracy_on_hard(err),
+                eval_on_hard,
                 error_on_anomalies,
                 error_on_trend,
                 error_on_seas], axis=1)
@@ -271,7 +277,6 @@ df = df.loc[list(top_k_models), :]
 
 plot15 = ModelRadarPlotter.multidim_parallel_coords(df, values='normalize')
 plot15.save(f'{OUTPUT_DIR}/plot15_all_parallel.pdf', width=10, height=4)
-
 
 plot16 = SpiderPlot.create_plot(df=df,
                                 values='rank',

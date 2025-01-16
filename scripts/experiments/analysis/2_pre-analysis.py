@@ -1,3 +1,5 @@
+from pprint import pprint
+
 import pandas as pd
 import plotnine as p9
 from utilsforecast.losses import smape
@@ -85,7 +87,9 @@ for col in df:
 
 df = df.loc[list(top_k_models), :]
 
-df.index.tolist()
+pprint(df.index.tolist())
 
-SELECTED_MODELS = ['AutoETS', 'AutoNHITS', 'SESOpt', 'AutoLightGBM', 'AutoTFT', 'AutoKAN', 'AutoLSTM', 'AutoTheta',
+SELECTED_MODELS = ['AutoETS', 'AutoNHITS', 'SESOpt',
+                   'AutoLightGBM', 'AutoTFT', 'AutoKAN',
+                   'AutoARIMA', 'AutoTheta',
                    'AutoDeepNPTS']
