@@ -8,9 +8,8 @@ numpy==1.26.4
 pandas==2.2.3
 scikit-learn==1.5.2
 scipy==1.14.1
-statsforecast==1.7.5
+statsforecast==1.7.8
 statsmodels==0.14.4
-utilsforecast==0.2.9
-plotnine==0.14.3
-modelradar==0.1.2
+utilsforecast==0.2.11
+modelradar==0.1.4
 cardtale==0.1.0
