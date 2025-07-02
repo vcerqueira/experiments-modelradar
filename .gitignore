@@ -165,6 +165,7 @@ lightning_logs
 
 # Custom
 results.zip
+assets.zip
 assets/old/
 assets/cv.csv
 assets/papers/
