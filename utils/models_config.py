@@ -122,6 +122,7 @@ class ModelsConfig:
                     'AutoDeepNPTS',
                     'AutoDeepAR',
                     'AutoLSTM',
+                    'AutoKAN',
                     'AutoDilatedRNN',
                     'AutoTCN']
 
