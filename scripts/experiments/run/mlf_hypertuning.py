@@ -49,3 +49,20 @@ best_conf_df = pd.DataFrame(best_configs)
 best_conf_df.index.name = 'parameter'
 
 best_conf_df.to_csv(f'assets/results/{data_name},{group},{EXPERIMENT}.csv', index=True)
+
+# ----
+
+from mlforecast.auto import AutoModel, AutoMLForecast
+from sklearn.linear_model import Lasso
+
+def my_lasso_config(trial):
+    return {
+        'alpha': trial.suggest_loguniform('alpha', 1e-4, 1e-1),
+        'max_iter': trial.suggest_int('max_iter', 100, 2000),
+        'tol': trial.suggest_loguniform('tol', 1e-5, 1e-2),
+    }
+
+my_auto_lasso = AutoModel(
+    model=Lasso(),
+    config=my_lasso_config,  # Only optimize Lasso parameters
+)

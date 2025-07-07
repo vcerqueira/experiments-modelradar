@@ -1,0 +1,36 @@
+parameter,AutoKAN,AutoMLP,AutoDLinear,AutoNHITS,AutoDeepNPTS,AutoTFT,AutoPatchTST,AutoGRU,AutoDeepAR,AutoLSTM,AutoDilatedRNN,AutoTCN
+h,12,12,12,12,12,12,12,12,12,12,12,12
+grid_size,15,,,,,,,,,,,
+spline_order,3,,,,,,,,,,,
+hidden_size,512,256,,,32,64,16,,,,,
+learning_rate,0.00029889195011468633,0.0011813957059480483,0.0031903778527976566,0.004080814638329242,0.009801255851465412,0.00027058290042151643,0.005843201818266813,0.014192069496275236,0.00035509653497769534,0.02604040785227357,0.03814505659905024,0.02474300915205837
+scaler_type,,standard,,,,standard,,,robust,,,
+max_steps,1200.0,1000,1100.0,1000.0,800.0,2000,1000,1000,500,500,1000,1000
+batch_size,128,128,256,128,128,128,128,32,256,16,16,32
+windows_batch_size,256,1024,512,512,1024,256,512,,1024,,,
+loss,MAE(),MAE(),MAE(),MAE(),MAE(),MAE(),MAE(),MAE(),DistributionLoss(),MAE(),MAE(),MAE()
+random_seed,17,6,17,10,18,8,16,2,17,4,13,1
+accelerator,cpu,mps,mps,mps,cpu,mps,mps,cpu,cpu,cpu,cpu,cpu
+input_size,36,36,48,36,24,24,36,-12,12,-12,48,-12
+step_size,1,1,1,1,12,12,12,,12,,,
+valid_loss,MAE(),MAE(),MAE(),MAE(),MAE(),MAE(),MAE(),MAE(),MQLoss(),MAE(),MAE(),MAE()
+num_layers,,2,,,,,,,,,,
+moving_avg_window,,,51,,,,,,,,,
+n_pool_kernel_size,,,,"[2, 2, 1]",,,,,,,,
+n_freq_downsample,,,,"[180, 60, 1]",,,,,,,,
+dropout,,,,,0.01276041960205772,,,,,,,
+n_layers,,,,,4,,,,,,,
+n_head,,,,,,4,,,,,,
+n_heads,,,,,,,16,,,,,
+patch_len,,,,,,,24,,,,,
+revin,,,,,,,True,,,,,
+encoder_hidden_size,,,,,,,,16,,64,16,64
+encoder_n_layers,,,,,,,,3,,2,,
+context_size,,,,,,,,50,,5,10,10
+decoder_hidden_size,,,,,,,,128,,64,128,64
+inference_input_size,,,,,,,,-12,,-12,-12,-12
+lstm_hidden_size,,,,,,,,,32,,,
+lstm_n_layers,,,,,,,,,3,,,
+lstm_dropout,,,,,,,,,0.24634830535961966,,,
+cell_type,,,,,,,,,,,LSTM,
+dilations,,,,,,,,,,,"[[1, 2], [4, 8]]",
