@@ -47,6 +47,7 @@ for seed_ in SEEDS:
     results_list.append(fcst_nf)
 
 results_df = pd.concat(results_list)
+# results_df = pd.read_csv(f'assets/results/{data_name},{group},{EXPERIMENT}.csv')
 
 metadata = ['unique_id', 'ds', 'y',
             'trend_str', 'seas_str',
@@ -63,5 +64,6 @@ radar = ModelRadar(cv_df=results_df,
 
 err = radar.evaluate_by_group(group_col='seed', cv=results_df)
 print(err)
+err.std(axis=1)
 
-err.to_csv(f'assets/results/{data_name},{group},{EXPERIMENT}.csv', index=False)
+results_df.to_csv(f'assets/results/{data_name},{group},{EXPERIMENT}.csv', index=False)

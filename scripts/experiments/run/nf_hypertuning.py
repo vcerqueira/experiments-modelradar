@@ -9,7 +9,7 @@ from utils.models_config import ModelsConfig
 warnings.filterwarnings('ignore')
 
 # ---- data loading and partitioning
-GROUP_IDX = 5
+GROUP_IDX = 6
 EXPERIMENT = 'hpo-nf'
 data_name, group = DATA_GROUPS[GROUP_IDX]
 print(data_name, group)
@@ -23,7 +23,8 @@ df, horizon, n_lags, freq_str, freq_int = data_loader.load_everything(group)
 train, _ = data_loader.train_test_split(df, horizon=horizon)
 
 # ---- model setup
-nf = NeuralForecast(models=ModelsConfig.get_auto_nf_models(horizon=horizon), freq=freq_str)
+nf = NeuralForecast(models=ModelsConfig.get_auto_nf_models(horizon=horizon,
+                                                           limit_val_batches=True), freq=freq_str)
 
 # ---- model fitting
 nf.fit(df=train)
