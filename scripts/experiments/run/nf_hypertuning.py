@@ -9,7 +9,7 @@ from utils.models_config import ModelsConfig
 warnings.filterwarnings('ignore')
 
 # ---- data loading and partitioning
-GROUP_IDX = 6
+GROUP_IDX = 7
 EXPERIMENT = 'hpo-nf'
 data_name, group = DATA_GROUPS[GROUP_IDX]
 print(data_name, group)

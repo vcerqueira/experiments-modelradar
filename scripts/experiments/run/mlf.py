@@ -3,12 +3,13 @@ import warnings
 from mlforecast import MLForecast
 from mlforecast.auto import AutoMLForecast
 
-from utils.load_data.config import DATASETS, DATA_GROUPS, GROUP_IDX
+from utils.load_data.config import DATASETS, DATA_GROUPS
 from utils.models_config import ModelsConfig
 
 warnings.filterwarnings("ignore")
 
 # ---- data loading and partitioning
+GROUP_IDX = 0
 EXPERIMENT = 'mlf'
 data_name, group = DATA_GROUPS[GROUP_IDX]
 print(data_name, group)

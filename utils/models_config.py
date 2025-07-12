@@ -63,6 +63,7 @@ CONFIG_TYPES = {
     'random_seed': int,
     'accelerator': str,
     'input_size': int,
+    'limit_val_batches': int,
     'step_size': int,
     'num_layers': int,
     'moving_avg_window': int,
@@ -162,7 +163,7 @@ class ModelsConfig:
         auto_models_ml = {
             'Ridge': AutoRidge(),
             'Lasso': AutoLasso(),
-            'Elastic-net': AutoElasticNet(),
+            # 'Elastic-net': AutoElasticNet(),
             'XGB': AutoXGBoost(),
             'LGB': AutoLightGBM(),
         }

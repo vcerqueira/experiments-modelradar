@@ -1,16 +1,17 @@
 import warnings
 
-import pandas as pd
 from mlforecast.auto import AutoMLForecast
+import pandas as pd
 
 from utils.load_data.config import DATASETS, DATA_GROUPS
 from utils.models_config import ModelsConfig
+from utils.init_robustness import run_robustness_analysis
 
 warnings.filterwarnings("ignore")
 
 # ---- data loading and partitioning
 GROUP_IDX = 0
-EXPERIMENT = 'hpo-mlf'
+EXPERIMENT = 'mlf'
 data_name, group = DATA_GROUPS[GROUP_IDX]
 print(data_name, group)
 data_loader = DATASETS[data_name]
@@ -23,9 +24,10 @@ df = data_loader.prune_df_by_size(df, (n_lags + horizon) * 2 + 1)
 # df = data_loader.dummify_series(df)
 # df['unique_id'].value_counts()
 
-train, _ = data_loader.train_test_split(df, horizon=horizon)
+train, test = data_loader.train_test_split(df, horizon=horizon)
 # train = data_loader.prune_df_by_size(train, n_lags+horizon+2)
 # test = data_loader.prune_df_by_size(test, n_lags+horizon+1)
+
 
 auto_mlf = AutoMLForecast(
     models=ModelsConfig.get_amlf_models(),
@@ -38,33 +40,36 @@ auto_mlf.fit(df=train,
              n_windows=2,
              refit=False,
              h=horizon,
-             num_samples=ModelsConfig.N_SAMPLES)
+             num_samples=ModelsConfig.N_SAMPLES
+             # num_samples=2
+             )
 
-# todo tentar fazer tudo on-the-fly?
+# ---- forecasts
+fcst = auto_mlf.predict(h=horizon)
+
+fcst = fcst.merge(test, on=['ds', 'unique_id'], how='right')
+
+fcst.to_csv(f'assets/results/{data_name},{group},{EXPERIMENT}.csv', index=False)
 
 # ---- store best params
 best_configs = {}
 for mod in auto_mlf.models:
-    best_configs[mod] = auto_mlf.results_[mod].best_trial.user_attrs['config']['model_params']
+    if mod in ['Ridge', 'Lasso']:
+        continue
 
-best_conf_df = pd.DataFrame(best_configs)
-best_conf_df.index.name = 'parameter'
+    best_configs[mod] = auto_mlf.results_[mod].best_trial.user_attrs['config']
 
-best_conf_df.to_csv(f'assets/results/{data_name},{group},{EXPERIMENT}.csv', index=True)
+# ---- robustness analysis
+robustness_results = {}
+for model_name, config in best_configs.items():
+    print(f"\n=== Testing stability for {model_name} ===")
+    print(f"Model-specific mlf_init_params: {config['mlf_init_params']}")
+    print(f"Model-specific mlf_fit_params: {config['mlf_fit_params']}")
 
-# ----
+    robustness_results[model_name] = run_robustness_analysis(
+        config, model_name, train, test, freq_str, horizon
+    )
 
-from mlforecast.auto import AutoModel, AutoMLForecast
-from sklearn.linear_model import Lasso
+robustness_df = pd.DataFrame(robustness_results)
 
-def my_lasso_config(trial):
-    return {
-        'alpha': trial.suggest_loguniform('alpha', 1e-4, 1e-1),
-        'max_iter': trial.suggest_int('max_iter', 100, 2000),
-        'tol': trial.suggest_loguniform('tol', 1e-5, 1e-2),
-    }
-
-my_auto_lasso = AutoModel(
-    model=Lasso(),
-    config=my_lasso_config,  # Only optimize Lasso parameters
-)
+robustness_df.to_csv(f'assets/results/{data_name},{group},robust-{EXPERIMENT}.csv', index=True)
