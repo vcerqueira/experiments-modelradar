@@ -1,14 +1,18 @@
+"""
+Obsolete in final experiments -- keeping for reference
+"""
 import warnings
 
 from neuralforecast import NeuralForecast
 
-from utils.load_data.config import DATASETS, DATA_GROUPS, GROUP_IDX
+from utils.load_data.config import DATASETS, DATA_GROUPS
 from utils.models_config import ModelsConfig
 
 warnings.filterwarnings('ignore')
 
 # ---- data loading and partitioning
-EXPERIMENT = 'nf3'
+GROUP_IDX = 0
+EXPERIMENT = 'nf-ind0'
 data_name, group = DATA_GROUPS[GROUP_IDX]
 print(data_name, group)
 data_loader = DATASETS[data_name]
