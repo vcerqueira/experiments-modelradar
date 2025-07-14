@@ -2,12 +2,13 @@ import warnings
 
 from statsforecast import StatsForecast
 
-from utils.load_data.config import DATASETS, DATA_GROUPS, GROUP_IDX
+from utils.load_data.config import DATASETS, DATA_GROUPS
 from utils.models_config import ModelsConfig
 
 warnings.filterwarnings("ignore")
 
 # ---- data loading and partitioning
+GROUP_IDX = 0
 EXPERIMENT = 'sf'
 N_JOBS = 8  # 8
 data_name, group = DATA_GROUPS[GROUP_IDX]
