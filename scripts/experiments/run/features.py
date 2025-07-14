@@ -1,9 +1,10 @@
 import pandas as pd
 from cardtale.analytics.testing.card.trend import DifferencingTests
 
-from utils.load_data.config import DATASETS, DATA_GROUPS, GROUP_IDX
+from utils.load_data.config import DATASETS, DATA_GROUPS
 
 # ---- data loading and partitioning
+GROUP_IDX = 0
 EXPERIMENT = 'features'
 data_name, group = DATA_GROUPS[GROUP_IDX]
 print(data_name, group)

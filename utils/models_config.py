@@ -127,17 +127,17 @@ class ModelsConfig:
     @classmethod
     def get_sf_models(cls, season_len: int, input_size: int):
         models = [
-            RandomWalkWithDrift(),
+            # RandomWalkWithDrift(),
             SeasonalNaive(season_length=season_len),
-            AutoETS(season_length=season_len),
+            # AutoETS(season_length=season_len),
             AutoARIMA(season_length=season_len,
                       max_p=2, max_q=2,
                       max_P=1, max_Q=1, max_d=1,
                       max_D=1, nmodels=cls.N_SAMPLES),
-            AutoTheta(season_length=season_len),
-            SimpleExponentialSmoothingOptimized(),
-            CrostonOptimized(),
-            WindowAverage(window_size=input_size),
+            # AutoTheta(season_length=season_len),
+            # SimpleExponentialSmoothingOptimized(),
+            # CrostonOptimized(),
+            # WindowAverage(window_size=input_size),
         ]
 
         return models

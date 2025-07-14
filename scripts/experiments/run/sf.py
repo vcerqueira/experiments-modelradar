@@ -8,9 +8,9 @@ from utils.models_config import ModelsConfig
 warnings.filterwarnings("ignore")
 
 # ---- data loading and partitioning
-GROUP_IDX = 0
-EXPERIMENT = 'sf'
-N_JOBS = 8  # 8
+GROUP_IDX = 6
+EXPERIMENT = 'sf2'
+N_JOBS = 1
 data_name, group = DATA_GROUPS[GROUP_IDX]
 print(data_name, group)
 data_loader = DATASETS[data_name]
