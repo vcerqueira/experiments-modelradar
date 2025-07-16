@@ -30,6 +30,6 @@ for ds, group in DATA_GROUPS:
 df_all = pd.concat(dataset)
 
 df_all = df_all.merge(metadata, on='data_group', how='left')
-df_all = df_all.drop(columns=['data_group','n_obs','n_uids'])
+df_all = df_all.drop(columns=['n_obs','n_uids'])
 
 df_all.to_csv('assets/cv.csv', index=False)

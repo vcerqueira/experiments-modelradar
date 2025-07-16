@@ -27,14 +27,24 @@ cv['Frequency'] = cv.apply(lambda row: 'Monthly' if any(row['unique_id'].lower()
 
 metadata = ['unique_id', 'ds', 'y',
             'trend_str', 'seas_str',
-            'is_anomaly', 'large_obs',
+            'is_anomaly', 'large_obs', 'data_group',
             'large_uids', 'anomaly_status', 'Frequency']
 model_names = cv.columns[~cv.columns.str.contains('|'.join(metadata))].tolist()
 
-SELECTED_MODELS = ['AutoETS', 'AutoNHITS', 'SESOpt',
-                   'AutoLightGBM', 'AutoTFT', 'AutoKAN',
-                   'AutoARIMA', 'AutoTheta',
-                   'AutoDeepNPTS', 'SeasonalNaive']
+# SELECTED_MODELS = ['AutoETS', 'AutoNHITS', 'SESOpt',
+#                    'AutoLightGBM', 'AutoTFT', 'AutoKAN',
+#                    'AutoARIMA', 'AutoTheta',
+#                    'AutoDeepNPTS', 'SeasonalNaive']
+
+SELECTED_MODELS = ['AutoPatchTST',
+                   'AutoMLP',
+                   'AutoTFT',
+                   'AutoTheta',
+                   'AutoETS',
+                   'AutoARIMA',
+                   'SESOpt',
+                   'AutoNHITS',
+                   'AutoLightGBM', 'SeasonalNaive']
 
 radar = ModelRadar(cv_df=cv,
                    metrics=[smape],

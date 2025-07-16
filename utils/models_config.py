@@ -198,6 +198,21 @@ class ModelsConfig:
             'AutoTCN': AutoTCN,
         }
 
+        # model_cls = {
+        #     # 'AutoKAN': AutoKAN,
+        #     # 'AutoMLP': AutoMLP,
+        #     # 'AutoDLinear': AutoDLinear,
+        #     # 'AutoNHITS': AutoNHITS,
+        #     # 'AutoDeepNPTS': AutoDeepNPTS,
+        #     # 'AutoTFT': AutoTFT,
+        #     # 'AutoPatchTST': AutoPatchTST,
+        #     'AutoGRU': AutoGRU,
+        #     'AutoDeepAR': AutoDeepAR,
+        #     'AutoLSTM': AutoLSTM,
+        #     'AutoDilatedRNN': AutoDilatedRNN,
+        #     'AutoTCN': AutoTCN,
+        # }
+
         models = []
         for mod_name, mod in model_cls.items():
             if mod_name in NEED_CPU:

@@ -11,5 +11,5 @@ scipy==1.14.1
 statsforecast==1.7.8
 statsmodels==0.14.4
 utilsforecast==0.2.11
-modelradar==0.2.0
+modelradar==0.2.1
 cardtale==0.1.4

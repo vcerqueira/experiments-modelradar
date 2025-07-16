@@ -12,7 +12,7 @@ OUTPUT_DIR = 'scripts/experiments/outputs'
 
 cv = pd.read_csv('assets/cv.csv')
 cv['anomaly_status'] = cv['is_anomaly'].map({0: 'No anomalies', 1: 'With anomalies'})
-cv = cv.drop(columns=['DT', 'RF', 'KNN', 'LGBl', 'Elastic-net'])
+cv = cv.drop(columns=['index'])
 cv = cv.rename(columns={
     'Ridge': 'AutoRidge',
     'Lasso': 'AutoLasso',
@@ -28,7 +28,7 @@ cv['seas_str'].value_counts(normalize=True)
 
 metadata = ['unique_id', 'ds', 'y',
             'trend_str', 'seas_str',
-            'is_anomaly', 'large_obs',
+            'is_anomaly', 'large_obs', 'data_group',
             'large_uids', 'anomaly_status']
 model_names = cv.columns[~cv.columns.str.contains('|'.join(metadata))].tolist()
 
@@ -67,6 +67,7 @@ err = radar.evaluate(keep_uids=True)
 eval_overall = radar.evaluate()
 eval_hbounds = radar.evaluate_by_horizon_bounds()
 error_on_anomalies = radar.evaluate_by_group(group_col='anomaly_status')
+# error_on_ds = radar.evaluate_by_group(group_col='data_group')
 error_on_trend = radar.evaluate_by_group(group_col='trend_str')
 error_on_seas = radar.evaluate_by_group(group_col='seas_str')
 error_on_large_tr = radar.evaluate_by_group(group_col='large_obs')
@@ -89,7 +90,12 @@ df = df.loc[list(top_k_models), :]
 
 pprint(df.index.tolist())
 
-SELECTED_MODELS = ['AutoETS', 'AutoNHITS', 'SESOpt',
-                   'AutoLightGBM', 'AutoTFT', 'AutoKAN',
-                   'AutoARIMA', 'AutoTheta',
-                   'AutoDeepNPTS']
+SELECTED_MODELS = ['AutoPatchTST',
+                   'AutoMLP',
+                   'AutoTFT',
+                   'AutoTheta',
+                   'AutoETS',
+                   'AutoARIMA',
+                   'SESOpt',
+                   'AutoNHITS',
+                   'AutoLightGBM']
