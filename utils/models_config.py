@@ -198,28 +198,28 @@ class ModelsConfig:
             'AutoTCN': AutoTCN,
         }
 
-        # model_cls = {
-        #     # 'AutoKAN': AutoKAN,
-        #     # 'AutoMLP': AutoMLP,
-        #     # 'AutoDLinear': AutoDLinear,
-        #     # 'AutoNHITS': AutoNHITS,
-        #     # 'AutoDeepNPTS': AutoDeepNPTS,
-        #     # 'AutoTFT': AutoTFT,
-        #     # 'AutoPatchTST': AutoPatchTST,
-        #     'AutoGRU': AutoGRU,
-        #     'AutoDeepAR': AutoDeepAR,
-        #     'AutoLSTM': AutoLSTM,
-        #     'AutoDilatedRNN': AutoDilatedRNN,
-        #     'AutoTCN': AutoTCN,
-        # }
+        model_cls = {
+            # 'AutoKAN': AutoKAN,
+            # 'AutoMLP': AutoMLP,
+            # 'AutoDLinear': AutoDLinear,
+            # 'AutoNHITS': AutoNHITS,
+            # 'AutoDeepNPTS': AutoDeepNPTS,
+            # 'AutoTFT': AutoTFT,
+            # 'AutoPatchTST': AutoPatchTST,
+            # 'AutoGRU2': AutoGRU,
+            # 'AutoDeepAR': AutoDeepAR,
+            'AutoLSTM2': AutoLSTM,
+            # 'AutoDilatedRNN': AutoDilatedRNN,
+            # 'AutoTCN': AutoTCN,
+        }
 
         models = []
         for mod_name, mod in model_cls.items():
-            if mod_name in NEED_CPU:
-                # for RNN's
-                mod.default_config['accelerator'] = 'cpu'
-            else:
-                mod.default_config['accelerator'] = 'mps'
+            # if mod_name in NEED_CPU:
+            #     # for RNN's
+            #     mod.default_config['accelerator'] = 'cpu'
+            # else:
+            #     mod.default_config['accelerator'] = 'mps'
 
             if limit_val_batches:
                 # for M4
