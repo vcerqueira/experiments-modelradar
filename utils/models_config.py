@@ -346,18 +346,18 @@ class ModelsConfig:
                     'TCN']
 
         model_cls = {
-            # 'KAN': KAN,
-            # 'MLP': MLP,
+            'KAN': KAN,
+            'MLP': MLP,
             'DLinear': DLinear,
-            # 'NHITS': NHITS,
-            # 'DeepNPTS': DeepNPTS,
-            # 'TFT': TFT,
-            # 'PatchTST': PatchTST,
-            # 'GRU': GRU,
-            # 'DeepAR': DeepAR,
-            # 'LSTM': LSTM,
-            # 'DilatedRNN': DilatedRNN,
-            # 'TCN': TCN,
+            'NHITS': NHITS,
+            'DeepNPTS': DeepNPTS,
+            'TFT': TFT,
+            'PatchTST': PatchTST,
+            'GRU': GRU,
+            'DeepAR': DeepAR,
+            'LSTM': LSTM,
+            'DilatedRNN': DilatedRNN,
+            'TCN': TCN,
         }
 
         models = []
