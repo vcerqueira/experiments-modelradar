@@ -10,8 +10,8 @@ warnings.filterwarnings('ignore')
 
 # os.environ['PYTORCH_ENABLE_MPS_FALLBACK'] = '1'
 # ---- data loading and partitioning
-GROUP_IDX = 6
-EXPERIMENT = 'nf'
+GROUP_IDX = 0
+EXPERIMENT = 'nf1'
 data_name, group = DATA_GROUPS[GROUP_IDX]
 print(data_name, group)
 data_loader = DATASETS[data_name]
@@ -32,6 +32,6 @@ nf.fit(df=train)
 
 # ---- forecasts
 fcst_nf = nf.predict()
-fcst_nf = fcst_nf.reset_index().merge(test, on=['ds', 'unique_id'], how='right')
+fcst_nf = fcst_nf.merge(test, on=['ds', 'unique_id'], how='right')
 
 fcst_nf.to_csv(f'assets/results/{data_name},{group},{EXPERIMENT}.csv', index=False)

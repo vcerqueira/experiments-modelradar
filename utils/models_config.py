@@ -87,6 +87,21 @@ CONFIG_TYPES = {
     'dilations': 'literal_eval'
 }
 
+SCALER_DEFAULTS = {
+    'KAN': 'identity',
+    'MLP': 'identity',
+    'DLinear': 'robust',
+    'NHITS': 'identity',
+    'DeepNPTS': 'identity',
+    'TFT': 'robust',
+    'PatchTST': 'identity',
+    'GRU': 'robust',
+    'DeepAR': 'identity',
+    'LSTM': 'robust',
+    'DilatedRNN': 'robust',
+    'TCN': 'robust',
+}
+
 COLORS = {
     'A': '#8B0000',  # Deep red
     'B': '#6A0DAD',  # Deep purple
@@ -127,17 +142,17 @@ class ModelsConfig:
     @classmethod
     def get_sf_models(cls, season_len: int, input_size: int):
         models = [
-            # RandomWalkWithDrift(),
+            RandomWalkWithDrift(),
             SeasonalNaive(season_length=season_len),
-            # AutoETS(season_length=season_len),
+            AutoETS(season_length=season_len),
             AutoARIMA(season_length=season_len,
                       max_p=2, max_q=2,
                       max_P=1, max_Q=1, max_d=1,
                       max_D=1, nmodels=cls.N_SAMPLES),
-            # AutoTheta(season_length=season_len),
-            # SimpleExponentialSmoothingOptimized(),
-            # CrostonOptimized(),
-            # WindowAverage(window_size=input_size),
+            AutoTheta(season_length=season_len),
+            SimpleExponentialSmoothingOptimized(),
+            CrostonOptimized(),
+            WindowAverage(window_size=input_size),
         ]
 
         return models
@@ -198,28 +213,28 @@ class ModelsConfig:
             'AutoTCN': AutoTCN,
         }
 
-        model_cls = {
-            # 'AutoKAN': AutoKAN,
-            # 'AutoMLP': AutoMLP,
-            # 'AutoDLinear': AutoDLinear,
-            # 'AutoNHITS': AutoNHITS,
-            # 'AutoDeepNPTS': AutoDeepNPTS,
-            # 'AutoTFT': AutoTFT,
-            # 'AutoPatchTST': AutoPatchTST,
-            # 'AutoGRU2': AutoGRU,
-            # 'AutoDeepAR': AutoDeepAR,
-            'AutoLSTM2': AutoLSTM,
-            # 'AutoDilatedRNN': AutoDilatedRNN,
-            # 'AutoTCN': AutoTCN,
-        }
+        # model_cls = {
+        #     # 'AutoKAN': AutoKAN,
+        #     # 'AutoMLP': AutoMLP,
+        #     # 'AutoDLinear': AutoDLinear,
+        #     # 'AutoNHITS': AutoNHITS,
+        #     # 'AutoDeepNPTS': AutoDeepNPTS,
+        #     # 'AutoTFT': AutoTFT,
+        #     # 'AutoPatchTST': AutoPatchTST,
+        #     'AutoGRU': AutoGRU,
+        #     'AutoDeepAR': AutoDeepAR,
+        #     'AutoLSTM': AutoLSTM,
+        #     'AutoDilatedRNN': AutoDilatedRNN,
+        #     'AutoTCN': AutoTCN,
+        # }
 
         models = []
         for mod_name, mod in model_cls.items():
-            # if mod_name in NEED_CPU:
-            #     # for RNN's
-            #     mod.default_config['accelerator'] = 'cpu'
-            # else:
-            #     mod.default_config['accelerator'] = 'mps'
+            if mod_name in NEED_CPU:
+                # for RNN's
+                mod.default_config['accelerator'] = 'cpu'
+            else:
+                mod.default_config['accelerator'] = 'mps'
 
             if limit_val_batches:
                 # for M4
@@ -235,57 +250,57 @@ class ModelsConfig:
 
         return models
 
-    @classmethod
-    def get_auto_nf_models_simple(cls, horizon):
-        models = [
-            AutoKAN(h=horizon, num_samples=cls.N_SAMPLES, alias='AutoKAN'),
-            AutoMLP(h=horizon, num_samples=cls.N_SAMPLES, alias='AutoMLP'),
-            AutoDLinear(h=horizon, num_samples=cls.N_SAMPLES, alias='AutoDLinear'),
-            AutoNHITS(h=horizon, num_samples=cls.N_SAMPLES, alias='AutoNHITS'),
-            AutoDeepNPTS(h=horizon, num_samples=cls.N_SAMPLES, alias='AutoDeepNPTS'),
-            AutoTFT(h=horizon, num_samples=cls.N_SAMPLES, alias='AutoTFT'),
-            AutoPatchTST(h=horizon, num_samples=cls.N_SAMPLES, alias='AutoPatchTST'),
-            AutoGRU(h=horizon, num_samples=cls.N_SAMPLES, alias='AutoGRU'),
-            AutoDeepAR(h=horizon, num_samples=cls.N_SAMPLES, alias='AutoDeepAR'),
-            AutoLSTM(h=horizon, num_samples=cls.N_SAMPLES, alias='AutoLSTM'),
-            AutoDilatedRNN(h=horizon, num_samples=cls.N_SAMPLES, alias='AutoDilatedRNN'),
-            AutoTCN(h=horizon, num_samples=cls.N_SAMPLES, alias='AutoTCN'),
-        ]
-        return models
-
-    @classmethod
-    def get_auto_nf_models_cpu(cls, horizon):
-        model_cls = {
-            'AutoKAN': AutoKAN,
-            'AutoMLP': AutoMLP,
-            'AutoDLinear': AutoDLinear,
-            'AutoNHITS': AutoNHITS,
-            'AutoDeepNPTS': AutoDeepNPTS,
-            'AutoTFT': AutoTFT,
-            'AutoGRU': AutoGRU,
-            'AutoLSTM': AutoLSTM,
-            'AutoDeepAR': AutoDeepAR,
-            'AutoDilatedRNN': AutoDilatedRNN,
-            'AutoTCN': AutoTCN,
-            'AutoPatchTST': AutoPatchTST,
-        }
-
-        models = []
-        for mod_name, mod in model_cls.items():
-            # for RNN's
-            mod.default_config['accelerator'] = 'cpu'
-            # for M4
-            # mod.default_config['limit_val_batches'] = 50
-
-            model_instance = mod(
-                h=horizon,
-                num_samples=cls.N_SAMPLES,
-                alias=mod_name,
-            )
-
-            models.append(model_instance)
-
-        return models
+    # @classmethod
+    # def get_auto_nf_models_simple(cls, horizon):
+    #     models = [
+    #         AutoKAN(h=horizon, num_samples=cls.N_SAMPLES, alias='AutoKAN'),
+    #         AutoMLP(h=horizon, num_samples=cls.N_SAMPLES, alias='AutoMLP'),
+    #         AutoDLinear(h=horizon, num_samples=cls.N_SAMPLES, alias='AutoDLinear'),
+    #         AutoNHITS(h=horizon, num_samples=cls.N_SAMPLES, alias='AutoNHITS'),
+    #         AutoDeepNPTS(h=horizon, num_samples=cls.N_SAMPLES, alias='AutoDeepNPTS'),
+    #         AutoTFT(h=horizon, num_samples=cls.N_SAMPLES, alias='AutoTFT'),
+    #         AutoPatchTST(h=horizon, num_samples=cls.N_SAMPLES, alias='AutoPatchTST'),
+    #         AutoGRU(h=horizon, num_samples=cls.N_SAMPLES, alias='AutoGRU'),
+    #         AutoDeepAR(h=horizon, num_samples=cls.N_SAMPLES, alias='AutoDeepAR'),
+    #         AutoLSTM(h=horizon, num_samples=cls.N_SAMPLES, alias='AutoLSTM'),
+    #         AutoDilatedRNN(h=horizon, num_samples=cls.N_SAMPLES, alias='AutoDilatedRNN'),
+    #         AutoTCN(h=horizon, num_samples=cls.N_SAMPLES, alias='AutoTCN'),
+    #     ]
+    #     return models
+    #
+    # @classmethod
+    # def get_auto_nf_models_cpu(cls, horizon):
+    #     model_cls = {
+    #         'AutoKAN': AutoKAN,
+    #         'AutoMLP': AutoMLP,
+    #         'AutoDLinear': AutoDLinear,
+    #         'AutoNHITS': AutoNHITS,
+    #         'AutoDeepNPTS': AutoDeepNPTS,
+    #         'AutoTFT': AutoTFT,
+    #         'AutoGRU': AutoGRU,
+    #         'AutoLSTM': AutoLSTM,
+    #         'AutoDeepAR': AutoDeepAR,
+    #         'AutoDilatedRNN': AutoDilatedRNN,
+    #         'AutoTCN': AutoTCN,
+    #         'AutoPatchTST': AutoPatchTST,
+    #     }
+    #
+    #     models = []
+    #     for mod_name, mod in model_cls.items():
+    #         # for RNN's
+    #         mod.default_config['accelerator'] = 'cpu'
+    #         # for M4
+    #         # mod.default_config['limit_val_batches'] = 50
+    #
+    #         model_instance = mod(
+    #             h=horizon,
+    #             num_samples=cls.N_SAMPLES,
+    #             alias=mod_name,
+    #         )
+    #
+    #         models.append(model_instance)
+    #
+    #     return models
 
     @staticmethod
     def convert_config_types(d: dict) -> dict:
@@ -355,7 +370,8 @@ class ModelsConfig:
             conf.pop('h')
 
             if pd.isna(conf['scaler_type']):
-                conf['scaler_type'] = 'identity'
+                # conf['scaler_type'] = 'identity'
+                conf['scaler_type'] = SCALER_DEFAULTS[mod_name]
 
             conf = conf.dropna().to_dict()
 

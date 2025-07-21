@@ -46,6 +46,9 @@ SELECTED_MODELS = ['AutoPatchTST',
                    'AutoNHITS',
                    'AutoLightGBM', 'SeasonalNaive']
 
+# cv = cv.query('data_group=="Gluonts,m1_monthly"')
+cv = cv.query('data_group=="Gluonts,m1_quarterly"')
+
 radar = ModelRadar(cv_df=cv,
                    metrics=[smape],
                    model_names=SELECTED_MODELS,
@@ -53,6 +56,7 @@ radar = ModelRadar(cv_df=cv,
                    ratios_reference='AutoNHITS',
                    rope=10)
 
+# radar.evaluate()
 err = radar.evaluate(keep_uids=True)
 err_hard = radar.uid_accuracy.get_hard_uids(err)
 cv_hard = radar.cv_df.query(f'unique_id==@radar.uid_accuracy.hard_uid').reset_index(drop=True)
