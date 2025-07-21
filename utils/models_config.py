@@ -90,7 +90,7 @@ CONFIG_TYPES = {
 SCALER_DEFAULTS = {
     'KAN': 'identity',
     'MLP': 'identity',
-    'DLinear': 'robust',
+    'DLinear': 'identity',
     'NHITS': 'identity',
     'DeepNPTS': 'identity',
     'TFT': 'robust',
@@ -338,7 +338,7 @@ class ModelsConfig:
 
         NEED_CPU = ['GRU',
                     'DeepNPTS',
-                    # 'DLinear',
+                    'DLinear',
                     'DeepAR',
                     'LSTM',
                     'KAN',
@@ -346,18 +346,18 @@ class ModelsConfig:
                     'TCN']
 
         model_cls = {
-            'KAN': KAN,
-            'MLP': MLP,
+            # 'KAN': KAN,
+            # 'MLP': MLP,
             'DLinear': DLinear,
-            'NHITS': NHITS,
-            'DeepNPTS': DeepNPTS,
-            'TFT': TFT,
-            'PatchTST': PatchTST,
-            'GRU': GRU,
-            'DeepAR': DeepAR,
-            'LSTM': LSTM,
-            'DilatedRNN': DilatedRNN,
-            'TCN': TCN,
+            # 'NHITS': NHITS,
+            # 'DeepNPTS': DeepNPTS,
+            # 'TFT': TFT,
+            # 'PatchTST': PatchTST,
+            # 'GRU': GRU,
+            # 'DeepAR': DeepAR,
+            # 'LSTM': LSTM,
+            # 'DilatedRNN': DilatedRNN,
+            # 'TCN': TCN,
         }
 
         models = []

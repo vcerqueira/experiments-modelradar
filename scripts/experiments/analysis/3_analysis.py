@@ -48,10 +48,11 @@ SELECTED_MODELS = ['AutoPatchTST',
 
 # cv = cv.query('data_group=="Gluonts,m1_monthly"')
 # cv = cv.query('data_group=="Gluonts,m1_quarterly"')
+# cv = cv.query('data_group=="M4,Monthly"')
 
 radar = ModelRadar(cv_df=cv,
                    metrics=[smape],
-                   model_names=SELECTED_MODELS,
+                   # model_names=SELECTED_MODELS,
                    # model_names=model_names,
                    hardness_reference='SeasonalNaive',
                    ratios_reference='AutoNHITS',
