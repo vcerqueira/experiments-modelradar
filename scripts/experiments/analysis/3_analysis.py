@@ -25,7 +25,7 @@ monthly_prefix = ['m3_m', 'tourism_m', 'gluonts_m', 'm4_m']
 cv['Frequency'] = cv.apply(lambda row: 'Monthly' if any(row['unique_id'].lower().startswith(prefix)
                                                         for prefix in monthly_prefix) else 'Quarterly', axis=1)
 
-metadata = ['unique_id', 'ds', 'y',
+metadata = ['unique_id', 'ds', 'y','index',
             'trend_str', 'seas_str',
             'is_anomaly', 'large_obs', 'data_group',
             'large_uids', 'anomaly_status', 'Frequency']
@@ -47,16 +47,17 @@ SELECTED_MODELS = ['AutoPatchTST',
                    'AutoLightGBM', 'SeasonalNaive']
 
 # cv = cv.query('data_group=="Gluonts,m1_monthly"')
-cv = cv.query('data_group=="Gluonts,m1_quarterly"')
+# cv = cv.query('data_group=="Gluonts,m1_quarterly"')
 
 radar = ModelRadar(cv_df=cv,
                    metrics=[smape],
                    model_names=SELECTED_MODELS,
+                   # model_names=model_names,
                    hardness_reference='SeasonalNaive',
                    ratios_reference='AutoNHITS',
                    rope=10)
 
-# radar.evaluate()
+print(radar.evaluate())
 err = radar.evaluate(keep_uids=True)
 err_hard = radar.uid_accuracy.get_hard_uids(err)
 cv_hard = radar.cv_df.query(f'unique_id==@radar.uid_accuracy.hard_uid').reset_index(drop=True)

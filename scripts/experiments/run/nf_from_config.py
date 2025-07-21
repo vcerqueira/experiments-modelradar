@@ -10,8 +10,8 @@ warnings.filterwarnings('ignore')
 
 # os.environ['PYTORCH_ENABLE_MPS_FALLBACK'] = '1'
 # ---- data loading and partitioning
-GROUP_IDX = 0
-EXPERIMENT = 'nf1'
+GROUP_IDX = 6
+EXPERIMENT = 'nf'
 data_name, group = DATA_GROUPS[GROUP_IDX]
 print(data_name, group)
 data_loader = DATASETS[data_name]

@@ -14,7 +14,7 @@ warnings.filterwarnings('ignore')
 # ---- data loading and partitioning
 SEEDS = [2025, 2024, 2023, 2022, 2021, 2020, 2019, 2018, 2017, 2016]
 GROUP_IDX = 7
-EXPERIMENT = 'robust-nf'
+EXPERIMENT = 'robust-nf1'
 data_name, group = DATA_GROUPS[GROUP_IDX]
 print(data_name, group)
 data_loader = DATASETS[data_name]

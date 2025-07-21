@@ -1,4 +1,4 @@
-from typing import Dict, Optional
+from typing import Optional
 from ast import literal_eval
 
 import pandas as pd
@@ -338,6 +338,7 @@ class ModelsConfig:
 
         NEED_CPU = ['GRU',
                     'DeepNPTS',
+                    # 'DLinear',
                     'DeepAR',
                     'LSTM',
                     'KAN',
@@ -376,7 +377,7 @@ class ModelsConfig:
             conf = conf.dropna().to_dict()
 
             conf = cls.convert_config_types(conf)
-            print(conf)
+            print(mod_name, conf)
 
             if random_seed is not None:
                 conf['random_seed'] = random_seed

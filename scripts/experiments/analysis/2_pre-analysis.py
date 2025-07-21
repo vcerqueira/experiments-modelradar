@@ -12,7 +12,6 @@ OUTPUT_DIR = 'scripts/experiments/outputs'
 
 cv = pd.read_csv('assets/cv.csv')
 cv['anomaly_status'] = cv['is_anomaly'].map({0: 'No anomalies', 1: 'With anomalies'})
-cv = cv.drop(columns=['index'])
 cv = cv.rename(columns={
     'Ridge': 'AutoRidge',
     'Lasso': 'AutoLasso',
