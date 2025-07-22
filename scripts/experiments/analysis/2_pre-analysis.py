@@ -89,12 +89,14 @@ df = df.loc[list(top_k_models), :]
 
 pprint(df.index.tolist())
 
-SELECTED_MODELS = ['AutoPatchTST',
-                   'AutoMLP',
-                   'AutoTFT',
-                   'AutoTheta',
+SELECTED_MODELS = ['AutoLightGBM',
                    'AutoETS',
                    'AutoARIMA',
-                   'SESOpt',
+                   'AutoPatchTST',
+                   'AutoDilatedRNN',
                    'AutoNHITS',
-                   'AutoLightGBM']
+                   'AutoTheta',
+                   'AutoMLP',
+                   'AutoTFT',
+                   'SeasonalNaive',
+                   'SESOpt']

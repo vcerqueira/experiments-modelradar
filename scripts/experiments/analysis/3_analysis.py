@@ -25,37 +25,29 @@ monthly_prefix = ['m3_m', 'tourism_m', 'gluonts_m', 'm4_m']
 cv['Frequency'] = cv.apply(lambda row: 'Monthly' if any(row['unique_id'].lower().startswith(prefix)
                                                         for prefix in monthly_prefix) else 'Quarterly', axis=1)
 
-metadata = ['unique_id', 'ds', 'y','index',
+metadata = ['unique_id', 'ds', 'y', 'index',
             'trend_str', 'seas_str',
             'is_anomaly', 'large_obs', 'data_group',
             'large_uids', 'anomaly_status', 'Frequency']
 model_names = cv.columns[~cv.columns.str.contains('|'.join(metadata))].tolist()
 
-# SELECTED_MODELS = ['AutoETS', 'AutoNHITS', 'SESOpt',
-#                    'AutoLightGBM', 'AutoTFT', 'AutoKAN',
-#                    'AutoARIMA', 'AutoTheta',
-#                    'AutoDeepNPTS', 'SeasonalNaive']
-
-SELECTED_MODELS = ['AutoPatchTST',
-                   'AutoMLP',
-                   'AutoTFT',
-                   'AutoTheta',
+SELECTED_MODELS = ['AutoLightGBM',
                    'AutoETS',
                    'AutoARIMA',
-                   'SESOpt',
+                   'AutoPatchTST',
+                   'AutoDilatedRNN',
                    'AutoNHITS',
-                   'AutoLightGBM', 'SeasonalNaive']
-
-# cv = cv.query('data_group=="Gluonts,m1_monthly"')
-# cv = cv.query('data_group=="Gluonts,m1_quarterly"')
-# cv = cv.query('data_group=="M4,Monthly"')
+                   'AutoTheta',
+                   'AutoMLP',
+                   'AutoTFT',
+                   'SeasonalNaive',
+                   'SESOpt']
 
 radar = ModelRadar(cv_df=cv,
                    metrics=[smape],
-                   # model_names=SELECTED_MODELS,
-                   # model_names=model_names,
+                   model_names=SELECTED_MODELS,
                    hardness_reference='SeasonalNaive',
-                   ratios_reference='AutoNHITS',
+                   ratios_reference='AutoPatchTST',
                    rope=10)
 
 print(radar.evaluate())
