@@ -1,6 +1,7 @@
 import warnings
 
 import pandas as pd
+import plotnine as p9
 from utilsforecast.losses import smape
 from modelradar.evaluate.radar import ModelRadar
 
@@ -8,6 +9,7 @@ from utils.load_data.config import DATA_GROUPS
 
 warnings.filterwarnings('ignore')
 EXPERIMENT = 'robust-nf'
+OUTPUT_DIR = 'scripts/experiments/outputs'
 
 results_list = []
 for data_name, group in DATA_GROUPS:
@@ -36,10 +38,34 @@ err_df_ = radar.evaluate_by_group(group_col='seed')
 
 err_melted = err_df_.T.reset_index().melt('index')
 
-# std_data = {}
-# for g, df_ in results_df.groupby('Dataset'):
-#     print(g)
-#     err_df_ = radar.evaluate_by_group(group_col='seed', cv=df_)
-#     std_data[g] = err_df_.std(axis=1)
-#
-# pd.DataFrame(std_data)
+data_melted = err_melted.rename(columns={"variable": "Model"})
+
+data_melted["Model"] = pd.Categorical(
+    data_melted["Model"].values.tolist(), categories=data_melted["Model"].sort_values().unique()
+)
+
+plot17 = (
+        p9.ggplot(
+            data_melted,
+            p9.aes(
+                x="Model",
+                y="value",
+            ),
+        )
+        + p9.theme_538(base_family="Palatino", base_size=12) +
+        p9.theme(
+            plot_margin=0.025,
+            panel_background=p9.element_rect(fill="white"),
+            plot_background=p9.element_rect(fill="white"),
+            legend_box_background=p9.element_rect(fill="white"),
+            strip_background=p9.element_rect(fill="white"),
+            legend_background=p9.element_rect(fill="white"),
+            axis_text_x=p9.element_text(size=11, angle=30),
+            axis_text_y=p9.element_text(size=11),
+            legend_title=p9.element_blank(),
+        ) + p9.geom_boxplot(width=0.8, show_legend=False)
+        + p9.labs(y="Error", x="")
+        + p9.guides(fill="none")
+)
+
+plot17.save(f'{OUTPUT_DIR}/plot17_robustness.pdf', width=11, height=5.5)
