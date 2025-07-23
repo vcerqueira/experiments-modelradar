@@ -13,7 +13,7 @@ warnings.filterwarnings('ignore')
 # os.environ['PYTORCH_ENABLE_MPS_FALLBACK'] = '1'
 # ---- data loading and partitioning
 SEEDS = [2025, 2024, 2023, 2022, 2021, 2020, 2019, 2018, 2017, 2016]
-GROUP_IDX = 7
+GROUP_IDX = 0
 EXPERIMENT = 'robust-nf'
 data_name, group = DATA_GROUPS[GROUP_IDX]
 print(data_name, group)
@@ -64,6 +64,6 @@ radar = ModelRadar(cv_df=results_df,
 
 err = radar.evaluate_by_group(group_col='seed', cv=results_df)
 print(err)
-err.std(axis=1)
+print(err.std(axis=1))
 
 results_df.to_csv(f'assets/results/{data_name},{group},{EXPERIMENT}.csv', index=False)
