@@ -8,13 +8,22 @@ from modelradar.evaluate.radar import ModelRadar
 from utils.load_data.config import DATA_GROUPS
 
 warnings.filterwarnings('ignore')
-EXPERIMENT = 'robust-nf'
 OUTPUT_DIR = 'scripts/experiments/outputs'
 
 results_list = []
-for data_name, group in DATA_GROUPS:
+for data_name, group in DATA_GROUPS[:2]:
+    # data_name = 'Gluonts'
+    # group = 'm1_monthly'
     print(data_name, group)
-    df = pd.read_csv(f'assets/results/{data_name},{group},{EXPERIMENT}.csv')
+    # df = pd.read_csv(f'assets/results/{data_name},{group},robust-nf.csv')
+    df_nf = pd.read_csv(f'assets/results/{data_name},{group},robust-nf.csv')
+    df_mlf = pd.read_csv(f'assets/results/{data_name},{group},robust-mlf.csv')
+    df_mlf = df_mlf.rename(columns={'XGB': 'AutoXGBoost', 'LGB': 'AutoLightGBM'})
+
+    df = pd.merge(df_nf,df_mlf.drop(columns=['y']), on=['unique_id', 'ds', 'seed'])
+
+    # df = df_nf.merge(df_mlf)
+
     df['Dataset'] = f'{data_name},{group}'
 
     results_list.append(df)

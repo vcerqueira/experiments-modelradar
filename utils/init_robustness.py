@@ -22,6 +22,7 @@ def run_robustness_analysis(best_config, model_name, train_data, test_data, freq
     for run_id in range(n_runs):
         print(f"Running {model_name} - Run {run_id + 1}/{n_runs}")
         seed = SEEDS[run_id]
+        print('seed:', seed)
         np.random.seed(seed)
         random.seed(seed)
 
@@ -45,7 +46,7 @@ def run_robustness_analysis(best_config, model_name, train_data, test_data, freq
         preds = mlf.predict(horizon)
 
         # Add run identifier
-        preds['seed'] = run_id
+        preds['seed'] = seed
         preds = preds.merge(test_data, on=['ds', 'unique_id'], how='right')
 
         results.append(preds)
@@ -63,4 +64,4 @@ def run_robustness_analysis(best_config, model_name, train_data, test_data, freq
     err = radar.evaluate_by_group(group_col='seed', cv=results_df)
     err_s = err.iloc[0]
 
-    return err_s
+    return results_df, err_s

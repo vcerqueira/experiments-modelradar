@@ -10,7 +10,7 @@ from utils.init_robustness import run_robustness_analysis
 warnings.filterwarnings("ignore")
 
 # ---- data loading and partitioning
-GROUP_IDX = 7
+GROUP_IDX = 0
 EXPERIMENT = 'mlf'
 data_name, group = DATA_GROUPS[GROUP_IDX]
 print(data_name, group)
@@ -66,10 +66,12 @@ for model_name, config in best_configs.items():
     print(f"Model-specific mlf_init_params: {config['mlf_init_params']}")
     print(f"Model-specific mlf_fit_params: {config['mlf_fit_params']}")
 
-    robustness_results[model_name] = run_robustness_analysis(
+    robustness_results[model_name], err_s = run_robustness_analysis(
         config, model_name, train, test, freq_str, horizon
     )
 
-robustness_df = pd.DataFrame(robustness_results)
+robustness_df = pd.merge(robustness_results['XGB'],
+                         robustness_results['LGB'].drop(columns=['y']),
+                         on=['unique_id', 'ds', 'seed'])
 
-robustness_df.to_csv(f'assets/results/{data_name},{group},robust-{EXPERIMENT}.csv', index=True)
+robustness_df.to_csv(f'assets/results/{data_name},{group},robust-{EXPERIMENT}.csv', index=False)
