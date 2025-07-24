@@ -11,7 +11,7 @@ warnings.filterwarnings('ignore')
 OUTPUT_DIR = 'scripts/experiments/outputs'
 
 results_list = []
-for data_name, group in DATA_GROUPS[:2]:
+for data_name, group in DATA_GROUPS:
     # data_name = 'Gluonts'
     # group = 'm1_monthly'
     print(data_name, group)

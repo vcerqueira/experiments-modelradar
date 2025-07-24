@@ -10,7 +10,7 @@ from utils.init_robustness import run_robustness_analysis
 warnings.filterwarnings("ignore")
 
 # ---- data loading and partitioning
-GROUP_IDX = 0
+GROUP_IDX = 6
 EXPERIMENT = 'mlf'
 data_name, group = DATA_GROUPS[GROUP_IDX]
 print(data_name, group)
