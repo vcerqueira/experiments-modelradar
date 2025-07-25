@@ -181,7 +181,6 @@ class ModelsConfig:
         auto_models_ml = {
             'Ridge': AutoRidge(),
             'Lasso': AutoLasso(),
-            # 'Elastic-net': AutoElasticNet(),
             'XGB': AutoXGBoost(),
             'LGB': AutoLightGBM(),
         }
@@ -213,25 +212,9 @@ class ModelsConfig:
             'AutoTCN': AutoTCN,
         }
 
-        # model_cls = {
-        #     # 'AutoKAN': AutoKAN,
-        #     # 'AutoMLP': AutoMLP,
-        #     # 'AutoDLinear': AutoDLinear,
-        #     # 'AutoNHITS': AutoNHITS,
-        #     # 'AutoDeepNPTS': AutoDeepNPTS,
-        #     # 'AutoTFT': AutoTFT,
-        #     # 'AutoPatchTST': AutoPatchTST,
-        #     'AutoGRU': AutoGRU,
-        #     'AutoDeepAR': AutoDeepAR,
-        #     'AutoLSTM': AutoLSTM,
-        #     'AutoDilatedRNN': AutoDilatedRNN,
-        #     'AutoTCN': AutoTCN,
-        # }
-
         models = []
         for mod_name, mod in model_cls.items():
             if mod_name in NEED_CPU:
-                # for RNN's
                 mod.default_config['accelerator'] = 'cpu'
             else:
                 mod.default_config['accelerator'] = 'mps'
@@ -249,58 +232,6 @@ class ModelsConfig:
             models.append(model_instance)
 
         return models
-
-    # @classmethod
-    # def get_auto_nf_models_simple(cls, horizon):
-    #     models = [
-    #         AutoKAN(h=horizon, num_samples=cls.N_SAMPLES, alias='AutoKAN'),
-    #         AutoMLP(h=horizon, num_samples=cls.N_SAMPLES, alias='AutoMLP'),
-    #         AutoDLinear(h=horizon, num_samples=cls.N_SAMPLES, alias='AutoDLinear'),
-    #         AutoNHITS(h=horizon, num_samples=cls.N_SAMPLES, alias='AutoNHITS'),
-    #         AutoDeepNPTS(h=horizon, num_samples=cls.N_SAMPLES, alias='AutoDeepNPTS'),
-    #         AutoTFT(h=horizon, num_samples=cls.N_SAMPLES, alias='AutoTFT'),
-    #         AutoPatchTST(h=horizon, num_samples=cls.N_SAMPLES, alias='AutoPatchTST'),
-    #         AutoGRU(h=horizon, num_samples=cls.N_SAMPLES, alias='AutoGRU'),
-    #         AutoDeepAR(h=horizon, num_samples=cls.N_SAMPLES, alias='AutoDeepAR'),
-    #         AutoLSTM(h=horizon, num_samples=cls.N_SAMPLES, alias='AutoLSTM'),
-    #         AutoDilatedRNN(h=horizon, num_samples=cls.N_SAMPLES, alias='AutoDilatedRNN'),
-    #         AutoTCN(h=horizon, num_samples=cls.N_SAMPLES, alias='AutoTCN'),
-    #     ]
-    #     return models
-    #
-    # @classmethod
-    # def get_auto_nf_models_cpu(cls, horizon):
-    #     model_cls = {
-    #         'AutoKAN': AutoKAN,
-    #         'AutoMLP': AutoMLP,
-    #         'AutoDLinear': AutoDLinear,
-    #         'AutoNHITS': AutoNHITS,
-    #         'AutoDeepNPTS': AutoDeepNPTS,
-    #         'AutoTFT': AutoTFT,
-    #         'AutoGRU': AutoGRU,
-    #         'AutoLSTM': AutoLSTM,
-    #         'AutoDeepAR': AutoDeepAR,
-    #         'AutoDilatedRNN': AutoDilatedRNN,
-    #         'AutoTCN': AutoTCN,
-    #         'AutoPatchTST': AutoPatchTST,
-    #     }
-    #
-    #     models = []
-    #     for mod_name, mod in model_cls.items():
-    #         # for RNN's
-    #         mod.default_config['accelerator'] = 'cpu'
-    #         # for M4
-    #         # mod.default_config['limit_val_batches'] = 50
-    #
-    #         model_instance = mod(
-    #             h=horizon,
-    #             num_samples=cls.N_SAMPLES,
-    #             alias=mod_name,
-    #         )
-    #
-    #         models.append(model_instance)
-    #
-    #     return models
 
     @staticmethod
     def convert_config_types(d: dict) -> dict:

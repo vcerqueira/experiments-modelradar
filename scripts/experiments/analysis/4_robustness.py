@@ -69,8 +69,8 @@ plot17 = (
             legend_box_background=p9.element_rect(fill="white"),
             strip_background=p9.element_rect(fill="white"),
             legend_background=p9.element_rect(fill="white"),
-            axis_text_x=p9.element_text(size=11, angle=30),
-            axis_text_y=p9.element_text(size=11),
+            axis_text_x=p9.element_text(size=13, angle=30),
+            axis_text_y=p9.element_text(size=13),
             legend_title=p9.element_blank(),
         ) + p9.geom_boxplot(width=0.8, show_legend=False)
         + p9.labs(y="Error", x="")
